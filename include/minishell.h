@@ -13,4 +13,41 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../libft/libft.h"
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <ctype.h>
+
+enum				e_token
+{
+	AND = 1,
+	OR,
+	PIPE,
+	IN_REDIR,
+	OUT_REDIR,
+	APPEND,
+	HEREDOC,
+	WORD,
+	EXPAND,
+	SING_QUOTE,
+	DOUB_QUOTE,
+};
+
+enum    e_error
+{
+    SYNTAX_ERROR = 1,
+    ERROR
+};
+
+typedef struct s_node
+{
+	char			*value;
+	int				type;
+	struct s_node	*next;
+}					t_node;
+
 #endif

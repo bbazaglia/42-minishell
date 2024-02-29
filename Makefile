@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 
 # -fsanitize=address
 
-INCLUDE = -I./include -I ./libft
+INCLUDE = -I./include -I ./libft 
 
 LIBFT = ./libft/libft.a
 
@@ -18,7 +18,7 @@ SRC_OBJ = $(SRC:%.c=$(OBJ)/%.o)
 all: libft $(NAME)
 
 $(NAME): libft $(SRC_OBJ) 
-	@$(CC) $(CFLAGS) $(SRC_OBJ) $(LIBFT) -o $(NAME) 
+	@$(CC) $(CFLAGS) $(SRC_OBJ) -lreadline $(LIBFT) -o $(NAME) 
 	@echo "Compilation completed: $@"
 
 libft:
