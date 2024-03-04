@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "type_traits": "c",
+        "compare": "c",
+        "minishell.h": "c"
+    }
+}
