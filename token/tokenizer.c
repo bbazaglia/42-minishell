@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 15:33:08 by cogata            #+#    #+#             */
-/*   Updated: 2024/02/28 15:33:13 by cogata           ###   ########.fr       */
+/*   Created: 2024/03/04 12:30:33 by cogata            #+#    #+#             */
+/*   Updated: 2024/03/04 12:30:34 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
-int	main(void)
+void	tokenizer(char *prompt)
 {
-	char	*prompt;
+	int		i;
+	t_node	*head;
+	t_node	*node;
 
-	while (1)
+	head = NULL;
+	check_quote_syntax(prompt);
+	i = 0;
+	while (*prompt != '\0')
 	{
-		prompt = readline("minishell: ");
-		tokenizer(prompt);
+		node = split_token(&prompt);
+		if (node == NULL)
+			break ;
+		add_token(&head, node);
 	}
-	return (0);
+	print_lst_node(&head);
 }

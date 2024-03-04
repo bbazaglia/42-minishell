@@ -5,11 +5,19 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 
 # -fsanitize=address
 
+VPATH = syntax token
+
 INCLUDE = -I./include -I ./libft 
 
 LIBFT = ./libft/libft.a
 
-SRC = main.c
+SRC = main.c \
+	check_syntax.c \
+	compare.c \
+	token_list.c \
+	tokenizer.c \
+	error.c \
+	utils.c
 
 OBJ = obj
 
