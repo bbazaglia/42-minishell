@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/02/28 15:33:19 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/04 18:33:05 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ enum				e_token
 enum				e_error
 {
 	SYNTAX_ERROR = 1,
-	ERROR
+	UNCLOSED_QUOTE,
 };
 
 typedef struct s_node
@@ -57,7 +57,7 @@ t_node				*compare_word(char **prompt, int type);
 t_node				*compare_quote(char **prompt, char symbol, int type);
 
 // Token functions
-void				tokenizer(char *prompt);
+t_node				*tokenizer(char *prompt);
 t_node				*split_token(char **prompt);
 t_node				*create_meta_node(char **prompt, char *str, int move);
 t_node				*create_word_node(char *value, int type, char next_char);
@@ -65,6 +65,7 @@ void				add_token(t_node **head, t_node *node);
 
 // Syntax functions
 int					check_quote_syntax(char *prompt);
+void				check_syntax(t_node *node);
 
 // Error message
 void				error(int err);

@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 
 # -fsanitize=address
 
-VPATH = syntax token
+VPATH = syntax token heredoc
 
 INCLUDE = -I./include -I ./libft 
 
@@ -17,7 +17,8 @@ SRC = main.c \
 	token_list.c \
 	tokenizer.c \
 	error.c \
-	utils.c
+	utils.c \
+	check_heredoc.c
 
 OBJ = obj
 
