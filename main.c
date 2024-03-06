@@ -15,7 +15,7 @@
 int	main(void)
 {
 	char	*prompt;
-	t_node *head;
+	t_node	*head;
 
 	head = NULL;
 	while (1)
@@ -25,6 +25,7 @@ int	main(void)
 			add_history(prompt);
 		head = tokenizer(prompt);
 		check_syntax(head);
+		check_heredoc(head);
 	}
 	return (0);
 }

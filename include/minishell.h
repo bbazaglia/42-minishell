@@ -48,6 +48,7 @@ typedef struct s_node
 	char			*value;
 	int				type;
 	char			next_char;
+	int				fd;
 	struct s_node	*next;
 }					t_node;
 
@@ -66,6 +67,10 @@ void				add_token(t_node **head, t_node *node);
 // Syntax functions
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
+
+// Heredoc
+void				check_heredoc(t_node *head);
+int					create_heredoc_temp(void);
 
 // Error message
 void				error(int err);
