@@ -15,7 +15,7 @@
 int	main(void)
 {
 	char	*prompt;
-	t_node *head;
+	t_node	*head;
 
 	head = NULL;
 	while (1)

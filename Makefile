@@ -18,7 +18,8 @@ SRC = main.c \
 	tokenizer.c \
 	error.c \
 	utils.c \
-	check_heredoc.c
+	check_heredoc.c \
+	get_set_env.c
 
 OBJ = obj
 

@@ -67,6 +67,10 @@ void				add_token(t_node **head, t_node *node);
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
 
+//Set env
+char				**get_env_table(void);
+void				add_env_var(char **env_table, char *var_line);
+
 // Error message
 void				error(int err);
 
