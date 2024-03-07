@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/04 18:33:05 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:20:44 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -40,7 +41,7 @@ enum				e_token
 enum				e_error
 {
 	SYNTAX_ERROR = 1,
-	UNCLOSED_QUOTE,
+	SIGNAL_ERROR,
 };
 
 typedef struct s_node
@@ -50,6 +51,10 @@ typedef struct s_node
 	char			next_char;
 	struct s_node	*next;
 }					t_node;
+
+// Signal functions
+void				initialize_signals(void);
+void				sigint_handler(int signo);
 
 // Compare functions
 void				compare(t_node **node, char **prompt, char *temp, int i);

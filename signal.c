@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 15:33:08 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 18:21:44 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/07 13:15:20 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/07 18:21:07 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-int	main(void)
+void	initialize_signals(void)
 {
-	char	*prompt;
-	t_node	*head;
+	if (signal(SIGINT, sigint_handler) == SIG_ERR || signal(SIGQUIT,
+			SIG_IGN) == SIG_ERR)
+		error(SIGNAL_ERROR);
+}
 
-	head = NULL;
-	while (1)
-	{
-		initialize_signals();
-		prompt = readline("minishell: ");
-		if (!prompt)
-			exit(printf("exit\n"));
-		if (ft_strlen(prompt))
-			add_history(prompt);
-		head = tokenizer(prompt);
-		check_syntax(head);
-	}
-	return (0);
+void	sigint_handler(int signo)
+{
+	(void)signo;
+	ft_putstr_fd("\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
