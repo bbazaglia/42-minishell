@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/04 16:16:02 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:42:52 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	create_heredoc_temp(void)
 	filename = ft_itoa(num);
 	temp_path = ft_strjoin("/tmp/.heredoc_", filename);
 	fd = open(temp_path, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	if (fd < 0)
+		error(FD_ERROR);
 	num++;
 	free(filename);
 	free(temp_path);
@@ -40,7 +42,7 @@ void	check_heredoc(t_node *head)
 		{
 			delimiter = ft_strtrim(head->next->value, "'\"");
 			head->fd = create_heredoc_temp();
-			heredoc_prompt = readline(">");
+			heredoc_prompt = readline("> ");
 			while (ft_strncmp(heredoc_prompt, delimiter,
 					ft_strlen(delimiter)) != 0)
 			{
@@ -48,7 +50,7 @@ void	check_heredoc(t_node *head)
 				heredoc_prompt = ft_strjoin(temp, "\n");
 				free(temp);
 				write(head->fd, heredoc_prompt, ft_strlen(heredoc_prompt));
-				heredoc_prompt = readline(">");
+				heredoc_prompt = readline("> ");
 			}
 			free(delimiter);
 		}

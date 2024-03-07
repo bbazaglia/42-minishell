@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/04 18:33:05 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:40:59 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ enum				e_token
 enum				e_error
 {
 	SYNTAX_ERROR = 1,
-	UNCLOSED_QUOTE,
+	FD_ERROR,
 };
 
 typedef struct s_node
