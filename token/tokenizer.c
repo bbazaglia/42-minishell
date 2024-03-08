@@ -28,6 +28,6 @@ t_node	*tokenizer(char *prompt)
 			break ;
 		add_token(&head, node);
 	}
-	print_lst_node(&head);
+	// print_lst_node(&head);
 	return (head);
 }

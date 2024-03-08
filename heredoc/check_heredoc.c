@@ -38,9 +38,18 @@ void	check_heredoc(t_node *head)
 	{
 		if (head->type == HEREDOC)
 		{
+			g_heredoc_signal = 0;
+			signal(SIGINT, heredoc_handler);
 			delimiter = ft_strtrim(head->next->value, "'\"");
 			head->fd = create_heredoc_temp();
-			heredoc_prompt = readline(">");
+			heredoc_prompt = readline("> ");
+			if (!heredoc_prompt)
+			{
+				free(delimiter);
+				if (g_heredoc_signal == 0)
+					printf("warning: here-document at line 1 delimited by end-of-file\n");
+				break ;
+			}
 			while (ft_strncmp(heredoc_prompt, delimiter,
 					ft_strlen(delimiter)) != 0)
 			{
@@ -48,7 +57,14 @@ void	check_heredoc(t_node *head)
 				heredoc_prompt = ft_strjoin(temp, "\n");
 				free(temp);
 				write(head->fd, heredoc_prompt, ft_strlen(heredoc_prompt));
-				heredoc_prompt = readline(">");
+				heredoc_prompt = readline("> ");
+				if (!heredoc_prompt)
+				{
+					free(delimiter);
+					if (g_heredoc_signal == 0)
+						printf("warning: here-document at line 1 delimited by end-of-file\n");
+					break ;
+				}
 			}
 			free(delimiter);
 		}

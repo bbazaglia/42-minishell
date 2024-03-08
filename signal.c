@@ -27,3 +27,11 @@ void	sigint_handler(int signo)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+void	heredoc_handler(int signo)
+{
+	(void)signo;
+	write(STDOUT_FILENO, "\n", 1);
+	close(STDIN_FILENO);
+	g_heredoc_signal = 1;
+}

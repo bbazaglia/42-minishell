@@ -12,6 +12,8 @@
 
 #include "./include/minishell.h"
 
+volatile int	g_heredoc_signal;
+
 int	main(void)
 {
 	char			*prompt;
@@ -24,14 +26,17 @@ int	main(void)
 	{
 		initialize_signals();
 		prompt = readline("minishell: ");
-		if (!prompt)
+		printf("passou 1\n");	
+		if (!prompt && g_heredoc_signal == 0)
 			exit(printf("exit\n"));
 		if (!ft_strlen(prompt))
 			continue ;
+		printf("passou 2\n");	
 		add_history(prompt);
 		head = tokenizer(prompt);
 		check_syntax(head);
 		check_heredoc(head);
+		
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	}
 	return (0);

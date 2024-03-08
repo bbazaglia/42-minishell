@@ -24,6 +24,8 @@
 # include <termios.h>
 # include <unistd.h>
 
+extern volatile int g_heredoc_signal;
+
 enum				e_token
 {
 	AND = 1,
@@ -58,6 +60,7 @@ typedef struct s_node
 // Signal functions
 void				initialize_signals(void);
 void				sigint_handler(int signo);
+void				heredoc_handler(int signo);
 
 // Terminal functions
 void				set_terminal_attributes(void);
