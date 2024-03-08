@@ -19,7 +19,8 @@ SRC = main.c \
 	error.c \
 	utils.c \
 	check_heredoc.c \
-	signal.c 
+	signal.c \
+	terminal_attributes.c 
 
 OBJ = obj
 

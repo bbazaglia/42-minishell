@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 18:20:44 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/08 10:53:49 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <termios.h>
 # include <unistd.h>
 
 enum				e_token
@@ -55,6 +56,9 @@ typedef struct s_node
 // Signal functions
 void				initialize_signals(void);
 void				sigint_handler(int signo);
+
+// Terminal functions
+void				set_terminal_attributes(void);
 
 // Compare functions
 void				compare(t_node **node, char **prompt, char *temp, int i);

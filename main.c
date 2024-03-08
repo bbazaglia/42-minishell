@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:08 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 18:21:44 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/08 10:54:03 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(void)
 	while (1)
 	{
 		initialize_signals();
+		set_terminal_attributes();
 		prompt = readline("minishell: ");
 		if (!prompt)
 			exit(printf("exit\n"));

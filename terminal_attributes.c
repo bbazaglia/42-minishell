@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   terminal_attributes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 13:15:20 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/08 10:51:47 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/07 18:34:41 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/08 10:57:52 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-void	initialize_signals(void)
-{
-	if (signal(SIGINT, sigint_handler) == SIG_ERR || signal(SIGQUIT,
-			SIG_IGN) == SIG_ERR)
-		error(SIGNAL_ERROR);
-}
+// to do: tcsetattr will be called when the exit status equals to SIGQUIT
 
-void	sigint_handler(int signo)
+void	set_terminal_attributes(void)
 {
-	(void)signo;
-	ft_putstr_fd("\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
 }
