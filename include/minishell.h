@@ -42,6 +42,7 @@ enum				e_token
 enum				e_error
 {
 	SYNTAX_ERROR = 1,
+	MALLOC_FAILED,
 	SIGNAL_ERROR,
 };
 
@@ -76,6 +77,16 @@ void				add_token(t_node **head, t_node *node);
 // Syntax functions
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
+
+//Set env
+char				**insert_env_var(char **env_table, char *key, char *value);
+char				**add_env_var(char **env_table, char *var_line);
+char				**modify_env_var(char **env_table, char *var_new_line,
+						char *var_old_line);
+char				**del_env_var(char **env_table, char *key);
+char				**update_env_table(char *var_line, int size);
+char				**get_env_table(void);
+void				free_env_table(char **env_table);
 
 // Heredoc
 void				check_heredoc(t_node *head);

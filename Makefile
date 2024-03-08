@@ -19,6 +19,8 @@ SRC = main.c \
 	error.c \
 	utils.c \
 	check_heredoc.c \
+	get_set_env.c \
+	get_set_env_utils.c \
 	signal.c 
 
 OBJ = obj
