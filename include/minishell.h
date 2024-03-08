@@ -41,6 +41,7 @@ enum				e_error
 {
 	SYNTAX_ERROR = 1,
 	UNCLOSED_QUOTE,
+	MALLOC_FAILED,
 };
 
 typedef struct s_node
@@ -68,8 +69,14 @@ int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
 
 //Set env
+char				**insert_env_var(char **env_table, char *key, char *value);
+char				**add_env_var(char **env_table, char *var_line);
+char				**modify_env_var(char **env_table, char *var_new_line,
+						char *var_old_line);
+char				**del_env_var(char **env_table, char *key);
+char				**update_env_table(char *var_line, int size);
 char				**get_env_table(void);
-void				add_env_var(char **env_table, char *var_line);
+void				free_env_table(char **env_table);
 
 // Error message
 void				error(int err);

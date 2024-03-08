@@ -15,6 +15,8 @@
 void	error(int err)
 {
 	if (err == SYNTAX_ERROR)
-		ft_putstr_fd("syntax error\n", 2);
+		ft_putstr_fd("Syntax error\n", 2);
+	else if (err == MALLOC_FAILED)
+		ft_putstr_fd("Memory allocation failed\n", 2);
 	exit(EXIT_FAILURE);
 }
