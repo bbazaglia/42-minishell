@@ -37,6 +37,7 @@ t_node	*create_meta_node(char **prompt, char *str, int move)
 	if (node == NULL)
 		return (NULL);
 	node->value = ft_strdup(str);
+	node->fd = -1;
 	node->next = NULL;
 	if (ft_strncmp(str, "&&", 2) == 0)
 		node->type = AND;
@@ -67,6 +68,7 @@ t_node	*create_word_node(char *value, int type, char next_char)
 	node->value = value;
 	node->type = type;
 	node->next_char = next_char;
+	node->fd = -1;
 	node->next = NULL;
 	return (node);
 }
