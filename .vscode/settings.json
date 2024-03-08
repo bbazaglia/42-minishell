@@ -2,6 +2,10 @@
     "files.associations": {
         "type_traits": "c",
         "compare": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "signal.h": "c",
+        "readline.h": "c",
+        "history.h": "c",
+        "fcntl.h": "c"
     }
 }
