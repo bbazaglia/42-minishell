@@ -12,32 +12,33 @@
 
 #include "./include/minishell.h"
 
-volatile int	g_heredoc_signal;
+volatile int g_heredoc_signal;
 
-int	main(void)
+int main(void)
 {
-	char			*prompt;
-	t_node			*head;
-	struct termios	term;
+	int fd;
+	char *prompt;
+	t_node *head;
+	struct termios term;
 
 	head = NULL;
+	fd = dup(STDIN_FILENO);
 	tcgetattr(STDIN_FILENO, &term);
 	while (1)
 	{
 		initialize_signals();
 		prompt = readline("minishell: ");
-		printf("passou 1\n");	
 		if (!prompt && g_heredoc_signal == 0)
 			exit(printf("exit\n"));
 		if (!ft_strlen(prompt))
-			continue ;
-		printf("passou 2\n");	
+			continue;
 		add_history(prompt);
 		head = tokenizer(prompt);
 		check_syntax(head);
 		check_heredoc(head);
-		
+		dup2(fd, STDIN_FILENO);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		g_heredoc_signal = 0;
 	}
 	return (0);
 }

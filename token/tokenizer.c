@@ -14,13 +14,11 @@
 
 t_node	*tokenizer(char *prompt)
 {
-	int		i;
 	t_node	*head;
 	t_node	*node;
 
 	head = NULL;
 	check_quote_syntax(prompt);
-	i = 0;
 	while (*prompt != '\0')
 	{
 		node = split_token(&prompt);
