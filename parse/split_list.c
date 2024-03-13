@@ -84,7 +84,7 @@ void	execute(t_node **ptr_list, int count_pipe)
 	char *path_name;
 	char *path = "/usr/bin/";
 	char **args;
-	// int fork_id;
+	int fork_id;
 
 	//Mar 13
 	int status;
@@ -105,7 +105,7 @@ void	execute(t_node **ptr_list, int count_pipe)
 	//Mar 13
 	i = 0;
 	forks = malloc(sizeof(int *) * (count_pipe + 1));
-	while(i < (count_pipe + 1))
+	while (i < (count_pipe + 1))
 	{
 		forks[i] = malloc(sizeof(int));
 		i++;
@@ -116,7 +116,7 @@ void	execute(t_node **ptr_list, int count_pipe)
 	while (ptr_list[i])
 	{
 		if (i > 0 && ptr_list[i + 1] && ptr_list[i - 1]->type == PIPE
-			&& ptr_list[i + 1]->type == PIPE) //middle
+			&& ptr_list[i + 1]->type == PIPE)
 		{
 			if (pipe(fds[pos]) == -1)
 				exit(1);
@@ -134,15 +134,15 @@ void	execute(t_node **ptr_list, int count_pipe)
 				close(fds[pos][0]);
 				close(fds[pos - 1][0]);
 				close(fds[pos][1]);
-				execve(path_name, args, NULL);
+				if (execve(path_name, args, NULL) == -1)
+					exit(EXIT_FAILURE);
 			}
 			close(fds[pos - 1][0]);
 			close(fds[pos][1]);
-			// write(STDOUT_FILENO, "Middle\n", 7);
 			pos++;
 			index++;
 		}
-		else if (ptr_list[i + 1] && ptr_list[i + 1]->type == PIPE) //first
+		else if (ptr_list[i + 1] && ptr_list[i + 1]->type == PIPE)
 		{
 			if (pipe(fds[pos]) == -1)
 				exit(1);
@@ -156,14 +156,14 @@ void	execute(t_node **ptr_list, int count_pipe)
 				dup2(fds[pos][1], STDOUT_FILENO);
 				close(fds[pos][1]);
 				close(fds[pos][0]);
-				execve(path_name, args, NULL);
+				if (execve(path_name, args, NULL) == -1)
+					exit(EXIT_FAILURE);
 			}
 			close(fds[pos][1]);
-			// write(STDOUT_FILENO, "First\n", 6);
 			pos++;
 			index++;
 		}
-		else if (i > 0 && ptr_list[i - 1]->type == PIPE) //last
+		else if (i > 0 && ptr_list[i - 1]->type == PIPE)
 		{
 			forks[index][0] = fork();
 			if (forks[index][0] == -1)
@@ -174,20 +174,72 @@ void	execute(t_node **ptr_list, int count_pipe)
 				args = list_to_array(ptr_list[i]);
 				dup2(fds[pos - 1][0], STDIN_FILENO);
 				close(fds[pos - 1][0]);
-				execve(path_name, args, NULL);
+				if (execve(path_name, args, NULL) == -1)
+					exit(EXIT_FAILURE);
 			}
 			close(fds[pos - 1][0]);
-			// waitpid(fork_id, &status, 0);
 			j = 0;
-			while(j < (count_pipe + 1))
+			while (j < (count_pipe + 1))
 			{
 				waitpid(forks[j][0], &status, 0);
 				j++;
 			}
-			// write(STDOUT_FILENO, "Last\n", 5);
 			index++;
+		}
+		else if (ptr_list[i]->type == AND)
+		{
+			i++;
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+			{
+				fork_id = fork();
+				if (fork_id < 0)
+					exit(1);
+				else if (fork_id == 0)
+				{
+					path_name = ft_strjoin(path, ptr_list[i]->value);
+					args = list_to_array(ptr_list[i]);
+					if (execve(path_name, args, NULL) == -1)
+						exit(EXIT_FAILURE);
+				}
+				waitpid(fork_id, &status, 0);
+			}
+			else
+				printf("Error in &&\n");
+		}
+		else if (ptr_list[i]->type == OR)
+		{
+			i++;
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			{
+				fork_id = fork();
+				if (fork_id < 0)
+					exit(1);
+				else if (fork_id == 0)
+				{
+					path_name = ft_strjoin(path, ptr_list[i]->value);
+					args = list_to_array(ptr_list[i]);
+					if (execve(path_name, args, NULL) == -1)
+						exit(EXIT_FAILURE);
+				}
+				waitpid(fork_id, &status, 0);
+			}
+			else
+				printf("Error in ||\n");
+		}
+		else
+		{
+			fork_id = fork();
+			if (fork_id < 0)
+				exit(1);
+			else if (fork_id == 0)
+			{
+				path_name = ft_strjoin(path, ptr_list[i]->value);
+				args = list_to_array(ptr_list[i]);
+				if (execve(path_name, args, NULL) == -1)
+					exit(EXIT_FAILURE);
+			}
+			waitpid(fork_id, &status, 0);
 		}
 		i++;
 	}
-	// write(STDOUT_FILENO, "\n", 1);
 }
