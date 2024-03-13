@@ -12,9 +12,9 @@
 
 #include "./include/minishell.h"
 
-volatile int g_heredoc_signal;
+volatile int	g_heredoc_signal;
 
-int main(void)
+int	main(void)
 {
 	int fd;
 	char *prompt;
@@ -31,12 +31,14 @@ int main(void)
 		if (!prompt && g_heredoc_signal == 0)
 			exit(printf("exit\n"));
 		if (!ft_strlen(prompt))
-			continue;
+			continue ;
 		add_history(prompt);
 		head = tokenizer(prompt);
 		check_syntax(head);
 		check_heredoc(head);
-		dup2(fd, STDIN_FILENO);
+		dup2(STDIN_FILENO, fd);
+		split_list(head);
+		// printf("Back\n");
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		g_heredoc_signal = 0;
 	}

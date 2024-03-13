@@ -30,6 +30,21 @@ void	print_lst_node(t_node **head)
 	}
 }
 
+void	print_ptr_list(t_node **head)
+{
+	int		i;
+
+	i = 0;
+	while(head[i])
+	{	
+		printf("################\n");
+		printf("HEAD %d\n", i);
+		print_lst_node(&head[i]);
+		printf("################\n");
+		i++;
+	}
+}
+
 char	*ft_strndup(char *s, size_t n)
 {
 	int		i;

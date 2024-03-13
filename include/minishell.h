@@ -23,8 +23,9 @@
 # include <stdlib.h>
 # include <termios.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
-extern volatile int g_heredoc_signal;
+extern volatile int	g_heredoc_signal;
 
 enum				e_token
 {
@@ -81,6 +82,11 @@ void				add_token(t_node **head, t_node *node);
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
 
+//Parse
+void				split_list(t_node *head);
+void				execute(t_node **ptr_list, int count_pipe);
+char				**list_to_array(t_node *head);
+
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);
 char				**add_env_var(char **env_table, char *var_line);
@@ -101,5 +107,6 @@ void				error(int err);
 // Utils
 void				print_lst_node(t_node **head);
 char				*ft_strndup(char *s, size_t n);
+void				print_ptr_list(t_node **head);
 
 #endif

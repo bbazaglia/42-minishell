@@ -39,6 +39,7 @@ void	check_heredoc(t_node *head)
 		if (head->type == HEREDOC)
 		{
 			signal(SIGINT, heredoc_handler);
+			
 			delimiter = ft_strtrim(head->next->value, "'\"");
 			head->fd = create_heredoc_temp();
 			heredoc_prompt = readline("> ");
