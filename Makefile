@@ -2,10 +2,10 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 
+CFLAGS = -Wall -Wextra -Werror -g3 -w
 # -fsanitize=address
 
-VPATH = syntax token heredoc
+VPATH = syntax token heredoc tree
 
 INCLUDE = -I./include -I ./libft 
 
@@ -21,7 +21,9 @@ SRC = main.c \
 	check_heredoc.c \
 	get_set_env.c \
 	get_set_env_utils.c \
-	signal.c 
+	signal.c \
+	build_bin_tree.c \
+	print_tree.c
 
 OBJ = obj
 

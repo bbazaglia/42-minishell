@@ -20,7 +20,9 @@ int main(void)
 	char *prompt;
 	t_node *head;
 	struct termios term;
+	t_tree *root;
 
+	root = NULL;
 	head = NULL;
 	fd = dup(STDIN_FILENO);
 	tcgetattr(STDIN_FILENO, &term);
@@ -36,6 +38,8 @@ int main(void)
 		head = tokenizer(prompt);
 		check_syntax(head);
 		check_heredoc(head);
+		build_tree(&root, head);
+		printTree(root);
 		dup2(fd, STDIN_FILENO);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		g_heredoc_signal = 0;

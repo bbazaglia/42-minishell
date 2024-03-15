@@ -24,7 +24,7 @@
 # include <termios.h>
 # include <unistd.h>
 
-extern volatile int g_heredoc_signal;
+extern volatile int	g_heredoc_signal;
 
 enum				e_token
 {
@@ -57,6 +57,13 @@ typedef struct s_node
 	struct s_node	*next;
 }					t_node;
 
+typedef struct s_tree
+{
+	t_node			*list;
+	struct s_tree	*right;
+	struct s_tree	*left;
+}					t_tree;
+
 // Signal functions
 void				initialize_signals(void);
 void				sigint_handler(int signo);
@@ -81,6 +88,11 @@ void				add_token(t_node **head, t_node *node);
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
 
+//Tree
+void				build_tree(t_tree **root, t_node *list);
+void				printTree(t_tree *n);
+t_node				**split_list(t_node *list);
+
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);
 char				**add_env_var(char **env_table, char *var_line);
@@ -101,5 +113,7 @@ void				error(int err);
 // Utils
 void				print_lst_node(t_node **head);
 char				*ft_strndup(char *s, size_t n);
+void				printTree(t_tree *n);
+int maxDepth(t_tree* n);
 
 #endif
