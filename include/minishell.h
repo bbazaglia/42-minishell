@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/08 10:53:49 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:32:01 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
 
@@ -62,6 +63,7 @@ typedef struct s_tree
 	t_node			*list;
 	struct s_tree	*right;
 	struct s_tree	*left;
+	int				pipe_read;
 }					t_tree;
 
 // Signal functions
@@ -88,10 +90,18 @@ void				add_token(t_node **head, t_node *node);
 int					check_quote_syntax(char *prompt);
 void				check_syntax(t_node *node);
 
-//Tree
+// Tree
 void				build_tree(t_tree **root, t_node *list);
 void				printTree(t_tree *n);
 t_node				**split_list(t_node *list);
+
+// Execution
+void				execute_pipe(t_tree *root);
+void				execute_and_or(t_tree *root);
+void				open_fork(t_tree *root, char *path_name, char **args);
+void				execute_leaf(t_tree *root);
+void				execute_tree(t_tree *root);
+char				**list_to_array(t_node *head);
 
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);
@@ -114,6 +124,6 @@ void				error(int err);
 void				print_lst_node(t_node **head);
 char				*ft_strndup(char *s, size_t n);
 void				printTree(t_tree *n);
-int maxDepth(t_tree* n);
+int					maxDepth(t_tree *n);
 
 #endif

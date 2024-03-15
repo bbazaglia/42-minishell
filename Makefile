@@ -23,7 +23,8 @@ SRC = main.c \
 	get_set_env_utils.c \
 	signal.c \
 	build_bin_tree.c \
-	print_tree.c
+	print_tree.c \
+	execution.c
 
 OBJ = obj
 
