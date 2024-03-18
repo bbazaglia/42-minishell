@@ -38,48 +38,51 @@ char	**list_to_array(t_node *head)
 	return (args);
 }
 
-void	execute_tree(t_tree *root)
+void	execute_tree(t_tree *root, int **forks, int *pos)
 {
 	if (root->left && root->left->left)
-		execute_tree(root->left);
+		execute_tree(root->left, forks, pos);
 	if (root)
-		execute_leaf(root);
+		execute_leaf(root, forks, pos);
 	if (root->right && root->right->left)
-		execute_tree(root->right);
+		execute_tree(root->right, forks, pos);
 }
 
-void	execute_leaf(t_tree *root)
+void	execute_leaf(t_tree *root, int **forks, int *pos)
 {
 	char	*path_name;
 	char	*path;
 	char	**args;
-	int		fork_id;
+	// int		fork_id;
 	int		status;
 
 	path = "/usr/bin/";
 	path_name = ft_strjoin(path, root->list->value);
 	args = list_to_array(root->list);
+	
 	if (root->list->type == AND || root->list->type == OR)
-		execute_and_or(root);
+		execute_and_or(root, forks, pos);
 	else if (root->list->type == PIPE)
-		execute_pipe(root);
+		execute_pipe(root, forks, pos);
 	else
 	{
-		fork_id = fork();
-		if (fork_id == -1)
+		forks[*pos][0] = fork();
+		if (forks[*pos][0] == -1)
 			exit(1);
-		else if (fork_id == 0)
+		else if (forks[*pos][0] == 0)
 		{
 			if (execve(path_name, args, NULL) == -1)
 				exit(1);
 		}
-		waitpid(fork_id, &status, NULL);
+		if(root->list->last == 1)
+			wait_forks(forks, *pos);
+		*pos = *pos + 1;
 	}
 }
 
-void	execute_and_or(t_tree *root)
+void	execute_and_or(t_tree *root, int **forks, int *pos)
 {
-	int		fork_id;
+	// int		fork_id;
 	int		status;
 	char	*path_name;
 	char	*path;
@@ -88,17 +91,19 @@ void	execute_and_or(t_tree *root)
 	path = "/usr/bin/";
 	path_name = ft_strjoin(path, root->list->value);
 	args = list_to_array(root->list);
-	if (root->left->list->type == WORD)
+	if (root->left->list->type >= IN_REDIR && root->left->list->type <= DOUB_QUOTE)
 	{
-		fork_id = fork();
-		if (fork_id == -1)
+		forks[*pos][0] = fork();
+		if (forks[*pos][0] == -1)
 			exit(1);
-		else if (fork_id == 0)
+		else if (forks[*pos][0] == 0)
 		{
 			if (execve(path_name, args, NULL) == -1)
 				exit(1);
 		}
-		waitpid(fork_id, &status, NULL);
+		// if(root->list->last == 1)
+		// 	wait_forks(forks, pos);
+		*pos = *pos + 1;
 	}
 	if (root->list->type == AND && WIFEXITED(status)
 		&& WEXITSTATUS(status) != 0)
@@ -107,9 +112,9 @@ void	execute_and_or(t_tree *root)
 		exit(1);
 }
 
-void	execute_pipe(t_tree *root)
+void	execute_pipe(t_tree *root, int **forks, int *pos)
 {
-	int fork_id;
+	// int fork_id;
 	int status;
 	char *path_name;
 	char *path;
@@ -118,10 +123,10 @@ void	execute_pipe(t_tree *root)
 
 	path = "/usr/bin/";
 	pipe(fd);
-	fork_id = fork();
-	if (fork_id == -1)
+	forks[*pos][0] = fork();
+	if (forks[*pos][0] == -1)
 		exit(1);
-	else if (fork_id == 0)
+	else if (forks[*pos][0] == 0)
 	{
 		if (root->pipe_read != -1)
 		{
@@ -136,13 +141,15 @@ void	execute_pipe(t_tree *root)
 			exit(1);
 	}
 	close(fd[1]);
-	waitpid(fork_id, &status, NULL);
-	if (root->right->list->type == WORD)
+	// if(root->list->last == 1)
+	// 	wait_forks(forks, pos);
+	*pos = *pos + 1;
+	if (root->right->list->type >= IN_REDIR && root->right->list->type <= DOUB_QUOTE)
 	{
-		fork_id = fork();
-		if (fork_id == -1)
+		forks[*pos][0] = fork();
+		if (forks[*pos][0] == -1)
 			exit(1);
-		else if (fork_id == 0)
+		else if (forks[*pos][0] == 0)
 		{
 			path_name = ft_strjoin(path, root->right->list->value);
 			args = list_to_array(root->right->list);
@@ -152,9 +159,24 @@ void	execute_pipe(t_tree *root)
 				exit(1);
 		}
 		close(fd[0]);
-		waitpid(fork_id, &status, NULL);
+		if(root->right->list->last == 1)
+			wait_forks(forks, pos);
+		*pos = *pos + 1;
 	}
 	else
 		root->right->pipe_read = fd[0];
 	// to do: if last pipe, wait for all processes
+}
+
+void wait_forks(int **forks, int pos)
+{
+	int i;
+	int status;
+
+	i = 0;
+	while(i < pos)
+	{
+		waitpid(forks[i][0], &status, NULL);
+		i++;
+	}
 }

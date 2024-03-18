@@ -21,6 +21,9 @@ int main(void)
 	t_node *head;
 	struct termios term;
 	t_tree *root;
+	static int count_fork;
+	int **forks;
+	static int pos;
 
 	root = NULL;
 	head = NULL;
@@ -39,8 +42,12 @@ int main(void)
 		check_syntax(head);
 		check_heredoc(head);
 		build_tree(&root, head);
+		count_fork = 0;
+		count_processes(root, &count_fork);
+		forks = allocate_forks(count_fork);
 		// printTree(root);
-		execute_tree(root);
+		execute_tree(root, forks, &pos);
+		pos = 0;
 		dup2(fd, STDIN_FILENO);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		g_heredoc_signal = 0;

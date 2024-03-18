@@ -55,6 +55,7 @@ typedef struct s_node
 	int				type;
 	char			next_char;
 	int				fd;
+	int				last;
 	struct s_node	*next;
 }					t_node;
 
@@ -85,6 +86,8 @@ t_node				*split_token(char **prompt);
 t_node				*create_meta_node(char **prompt, char *str, int move);
 t_node				*create_word_node(char *value, int type, char next_char);
 void				add_token(t_node **head, t_node *node);
+t_node				**ptr_to_list(t_node *head);
+t_node				*copy_list(t_node *head);
 
 // Syntax functions
 int					check_quote_syntax(char *prompt);
@@ -94,14 +97,17 @@ void				check_syntax(t_node *node);
 void				build_tree(t_tree **root, t_node *list);
 void				printTree(t_tree *n);
 t_node				**split_list(t_node *list);
+void				count_processes(t_tree *root, int *count_fork);
+int					**allocate_forks(int count_fork);
 
 // Execution
-void				execute_pipe(t_tree *root);
-void				execute_and_or(t_tree *root);
+void				execute_and_or(t_tree *root, int **forks, int *pos);
+void				execute_pipe(t_tree *root, int **forks, int *pos);
 void				open_fork(t_tree *root, char *path_name, char **args);
-void				execute_leaf(t_tree *root);
-void				execute_tree(t_tree *root);
+void				execute_leaf(t_tree *root, int **forks, int *pos);
+void				execute_tree(t_tree *root, int **forks, int *pos);
 char				**list_to_array(t_node *head);
+void				wait_forks(int **forks, int pos);
 
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);

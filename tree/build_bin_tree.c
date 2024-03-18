@@ -1,6 +1,31 @@
 
 #include "../include/minishell.h"
 
+int	**allocate_forks(int count_fork)
+{
+	int	pos;
+	int	**forks;
+
+	pos = 0;
+	forks = ft_calloc(sizeof(int *), count_fork);
+	while (pos < count_fork)
+	{
+		forks[pos] = ft_calloc(sizeof(int), 1);
+		pos++;
+	}
+	return (forks);
+}
+
+void	count_processes(t_tree *root, int *count_fork)
+{
+	if (root->left)
+		count_processes(root->left, count_fork);
+	if (root->list->type >= IN_REDIR && root->list->type <= DOUB_QUOTE)
+		*count_fork = *count_fork + 1;
+	if (root->right)
+		count_processes(root->right, count_fork);
+}
+
 t_node	**split_list(t_node *list)
 {
 	int		i;
@@ -54,8 +79,8 @@ t_node	**split_list(t_node *list)
 			else
 			{
 				ptr_list[i] = tmp;
-				while ((found == 1 && tmp->next) || (tmp->next && tmp->next->type != AND
-						&& tmp->next->type != OR))
+				while ((found == 1 && tmp->next) || (tmp->next
+						&& tmp->next->type != AND && tmp->next->type != OR))
 					tmp = tmp->next;
 				tmp2 = tmp->next;
 				tmp->next = NULL;
@@ -79,7 +104,8 @@ t_node	**split_list(t_node *list)
 			else
 			{
 				ptr_list[i] = tmp;
-				while ((found == 1 && tmp->next) || (tmp->next && tmp->next->type != PIPE))
+				while ((found == 1 && tmp->next) || (tmp->next
+						&& tmp->next->type != PIPE))
 					tmp = tmp->next;
 				tmp2 = tmp->next;
 				tmp->next = NULL;
@@ -102,11 +128,11 @@ void	create_node(t_node *list, t_tree **root)
 
 void	build_tree(t_tree **root, t_node *list)
 {
-	t_node	**ptr_list;
+	t_node **ptr_list;
 
 	ptr_list = split_list(list);
 	if (!ptr_list && list)
-   		return (create_node(list, root));
+		return (create_node(list, root));
 	if (ptr_list[1])
 		create_node(ptr_list[1], root);
 	if (ptr_list[0])
