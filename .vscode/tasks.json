@@ -7,12 +7,22 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "${workspaceFolder}/*.c", 
+                "${workspaceFolder}/heredoc/*.c", 
+                "${workspaceFolder}/syntax/*.c", 
+                "${workspaceFolder}/token/*.c", 
+                "${workspaceFolder}/tree/*.c", 
+                "${workspaceFolder}/libft/*.c", 
+                "-lreadline",
+                "-I",
+                "${workspaceFolder}/include",
+                "-I",
+                "${workspaceFolder}/libft/include",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${workspaceFolder}/a.out"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"

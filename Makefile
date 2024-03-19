@@ -36,6 +36,9 @@ $(NAME): libft $(SRC_OBJ)
 	@$(CC) $(CFLAGS) $(SRC_OBJ) -lreadline $(LIBFT) -o $(NAME) 
 	@echo "Compilation completed: $@"
 
+a.out: libft $(SRC_OBJ)
+	@$(CC) $(CFLAGS) $(SRC_OBJ) -lreadline $(LIBFT)
+
 libft:
 	make -C ./libft
 

@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/15 15:32:01 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:56:32 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,17 @@ void				count_processes(t_tree *root, int *count_fork);
 int					**allocate_forks(int count_fork);
 
 // Execution
-void				execute_and_or(t_tree *root, int **forks, int *pos);
-void				execute_pipe(t_tree *root, int **forks, int *pos);
-void				open_fork(t_tree *root, char *path_name, char **args);
-void				execute_leaf(t_tree *root, int **forks, int *pos);
-void				execute_tree(t_tree *root, int **forks, int *pos);
+void				execute_tree(t_tree *root);
+void				execute_and_or(t_tree *root);
+void				execute_pipe(t_tree *root);
 char				**list_to_array(t_node *head);
-void				wait_forks(int **forks, int pos);
+void				execute_command(t_tree *root);
+// void				execute_and_or(t_tree *root, int **forks, int *pos);
+// void				execute_pipe(t_tree *root, int **forks, int *pos);
+// void				open_fork(t_tree *root, char *path_name, char **args);
+// void				execute_leaf(t_tree *root, int **forks, int *pos);
+// void				execute_tree(t_tree *root, int **forks, int *pos);
+// void				wait_forks(int **forks, int pos);
 
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);
