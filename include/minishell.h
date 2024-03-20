@@ -6,7 +6,7 @@
 /*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 15:22:40 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:41:54 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ typedef struct s_node
 	char			*value;
 	int				type;
 	char			next_char;
-	int				fd;
-	int				last;
 	struct s_node	*next;
 }					t_node;
 
@@ -89,8 +87,6 @@ t_node				*split_token(char **prompt);
 t_node				*create_meta_node(char **prompt, char *str, int move);
 t_node				*create_word_node(char *value, int type, char next_char);
 void				add_token(t_node **head, t_node *node);
-t_node				**ptr_to_list(t_node *head);
-t_node				*copy_list(t_node *head);
 
 // Syntax functions
 int					check_quote_syntax(char *prompt);
@@ -100,8 +96,6 @@ void				check_syntax(t_node *node);
 void				build_tree(t_tree **root, t_node *list);
 void				printTree(t_tree *n);
 t_node				**split_list(t_node *list);
-void				count_processes(t_tree *root, int *count_fork);
-int					**allocate_forks(int count_fork);
 void				execute_fork_command(t_tree *root);
 void				execute(t_tree *root);
 int					is_single_node(t_tree *root);

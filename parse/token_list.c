@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:39 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/04 12:30:40 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:37:56 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ t_node	*create_meta_node(char **prompt, char *str, int move)
 	if (node == NULL)
 		return (NULL);
 	node->value = ft_strdup(str);
-	node->fd = -1;
-	node->last = 0;
 	node->next = NULL;
 	if (ft_strncmp(str, "&&", 2) == 0)
 		node->type = AND;
@@ -69,8 +67,6 @@ t_node	*create_word_node(char *value, int type, char next_char)
 	node->value = value;
 	node->type = type;
 	node->next_char = next_char;
-	node->fd = -1;
-	node->last = 0;
 	node->next = NULL;
 	return (node);
 }

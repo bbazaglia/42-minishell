@@ -6,7 +6,7 @@
 /*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/20 16:27:10 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:35:45 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	check_delimiter(t_node *head, char *heredoc_input, char *delimiter)
 		if (!heredoc_input)
 		{
 			if (g_signal == 0)
-				printf("warning: here-document at line 1 delimited by end-of-file\n");
+				printf("warning: here-document at line \
+				1 delimited by end-of-file\n");
 			break ;
 		}
 	}
@@ -66,7 +67,8 @@ void	check_heredoc(t_node *head)
 			if (!heredoc_input)
 			{
 				if (g_signal == 0)
-					printf("warning: here-document at line 1 delimited by end-of-file\n");
+					printf("warning: here-document at line \
+					1 delimited by end-of-file\n");
 				break ;
 			}
 			check_delimiter(head, heredoc_input, delimiter);

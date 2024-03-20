@@ -1,31 +1,6 @@
 
 #include "../include/minishell.h"
 
-int	**allocate_forks(int count_fork)
-{
-	int	pos;
-	int	**forks;
-
-	pos = 0;
-	forks = ft_calloc(sizeof(int *), count_fork);
-	while (pos < count_fork)
-	{
-		forks[pos] = ft_calloc(sizeof(int), 1);
-		pos++;
-	}
-	return (forks);
-}
-
-void	count_processes(t_tree *root, int *count_fork)
-{
-	if (root->left)
-		count_processes(root->left, count_fork);
-	if (root->list->type >= IN_REDIR && root->list->type <= DOUB_QUOTE)
-		*count_fork = *count_fork + 1;
-	if (root->right)
-		count_processes(root->right, count_fork);
-}
-
 t_node	**split_list(t_node *list)
 {
 	int		i;
