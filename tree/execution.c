@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 12:21:53 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/19 18:56:22 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:39:37 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	execute_and_or(t_tree *root)
 
 void	execute_pipe(t_tree *root)
 {
+	signal(SIGINT, fd_handler);
 	int fork_id[2];
 	int fd[2];
 	int status;

@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:15:20 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/19 18:55:08 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:39:28 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ void	sigint_handler(int signo)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_heredoc_signal = 0;
+	g_fd_signal = 0;
 }
 
-void	heredoc_handler(int signo)
+void	fd_handler(int signo)
 {
 	(void)signo;
 	write(STDOUT_FILENO, "\n", 1);
 	close(STDIN_FILENO);
-	g_heredoc_signal = 1;
+	g_fd_signal = 1;
 }

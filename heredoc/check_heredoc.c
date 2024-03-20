@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/04 16:16:02 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:39:34 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	check_heredoc(t_node *head)
 	{
 		if (head->type == HEREDOC)
 		{
-			signal(SIGINT, heredoc_handler);
+			signal(SIGINT, fd_handler);
 			delimiter = ft_strtrim(head->next->value, "'\"");
 			head->fd = create_heredoc_temp();
 			heredoc_prompt = readline("> ");
 			if (!heredoc_prompt)
 			{
 				free(delimiter);
-				if (g_heredoc_signal == 0)
+				if (g_fd_signal == 0)
 					printf("warning: here-document at line 1 delimited by end-of-file\n");
 				break ;
 			}
@@ -60,7 +60,7 @@ void	check_heredoc(t_node *head)
 				if (!heredoc_prompt)
 				{
 					free(delimiter);
-					if (g_heredoc_signal == 0)
+					if (g_fd_signal == 0)
 						printf("warning: here-document at line 1 delimited by end-of-file\n");
 					break ;
 				}

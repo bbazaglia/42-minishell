@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/19 12:56:32 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:39:52 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <termios.h>
 # include <unistd.h>
 
-extern volatile int	g_heredoc_signal;
+extern volatile int	g_fd_signal;
 
 enum				e_token
 {
@@ -70,7 +70,7 @@ typedef struct s_tree
 // Signal functions
 void				initialize_signals(void);
 void				sigint_handler(int signo);
-void				heredoc_handler(int signo);
+void				fd_handler(int signo);
 
 // Terminal functions
 void				set_terminal_attributes(void);
