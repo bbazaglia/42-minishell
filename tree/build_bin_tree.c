@@ -142,3 +142,4 @@ void	build_tree(t_tree **root, t_node *list)
 	else
 		return ;
 }
+

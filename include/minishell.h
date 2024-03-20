@@ -25,7 +25,7 @@
 # include <termios.h>
 # include <unistd.h>
 
-extern volatile int	g_fd_signal;
+extern volatile int	g_signal;
 
 enum				e_token
 {
@@ -70,7 +70,7 @@ typedef struct s_tree
 // Signal functions
 void				initialize_signals(void);
 void				sigint_handler(int signo);
-void				fd_handler(int signo);
+void				sigint_cmd_handler(int signo);
 
 // Terminal functions
 void				set_terminal_attributes(void);
@@ -99,6 +99,9 @@ void				printTree(t_tree *n);
 t_node				**split_list(t_node *list);
 void				count_processes(t_tree *root, int *count_fork);
 int					**allocate_forks(int count_fork);
+void				execute_fork_command(t_tree *root);
+void				execute(t_tree *root);
+int					is_single_node(t_tree *root);
 
 // Execution
 void				execute_tree(t_tree *root);

@@ -101,18 +101,15 @@ void	execute_and_or(t_tree *root)
 
 void	execute_pipe(t_tree *root)
 {
-	signal(SIGINT, fd_handler);
-	int fork_id[2];
-	int fd[2];
-	int status;
-	pipe(fd);
+	int	fork_id[2];
+	int	fd[2];
+	int	status;
 
+	pipe(fd);
 	fork_id[0] = fork();
 	if (fork_id[0] == -1)
 		exit(1);
-
 	// to do: check for redirect
-
 	// open first fork
 	if (fork_id[0] == 0)
 	{
@@ -134,4 +131,46 @@ void	execute_pipe(t_tree *root)
 	close(fd[0]);
 	waitpid(fork_id[0], &status, NULL);
 	waitpid(fork_id[1], &status, NULL);
+}
+
+void	execute_fork_command(t_tree *root)
+{
+	int		fork_id;
+	int		status;
+	char	*path_name;
+	char	*path;
+	char	**args;
+
+	path = "/usr/bin/";
+	path_name = ft_strjoin(path, root->list->value);
+	args = list_to_array(root->list);
+	fork_id = fork();
+	if (fork_id == -1)
+		exit(1);
+	else if (fork_id == 0)
+	{
+		if (execve(path_name, args, NULL) == -1)
+			exit(1);
+	}
+	waitpid(fork_id, &status, NULL);
+}
+
+int	is_single_node(t_tree *root)
+{
+	int	is_single;
+
+	is_single = 1;
+	if (root && (root->right || root->left))
+		is_single = 0;
+	return (is_single);
+}
+
+void	execute(t_tree *root)
+{
+	signal(SIGINT, sigint_cmd_handler);
+
+	if (is_single_node(root))
+		execute_fork_command(root);
+	else
+		execute_tree(root);
 }

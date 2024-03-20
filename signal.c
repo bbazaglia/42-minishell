@@ -21,19 +21,18 @@ void	initialize_signals(void)
 
 void	sigint_handler(int signo)
 {
-	// printf("Cheguei no Ctrl C");
 	(void)signo;
 	ft_putstr_fd("\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_fd_signal = 0;
+	g_signal = 0;
 }
 
-void	fd_handler(int signo)
+void	sigint_cmd_handler(int signo)
 {
 	(void)signo;
 	write(STDOUT_FILENO, "\n", 1);
 	close(STDIN_FILENO);
-	g_fd_signal = 1;
+	g_signal = 1;
 }

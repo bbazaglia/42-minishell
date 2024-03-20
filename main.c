@@ -12,7 +12,7 @@
 
 #include "./include/minishell.h"
 
-volatile int	g_fd_signal;
+volatile int	g_signal;
 
 int	main(void)
 {
@@ -30,7 +30,7 @@ int	main(void)
 	{
 		initialize_signals();
 		input = readline("minishell (◕‿◕) > ");
-		if (!input && g_fd_signal == 0)
+		if (!input && g_signal == 0)
 			exit(printf("exit\n"));
 		if (ft_strlen(input))
 		{
@@ -40,11 +40,11 @@ int	main(void)
 			check_heredoc(head);
 			build_tree(&root, head);
 			// printTree(root);
-			execute_tree(root);
+			execute(root);
 			dup2(fd, STDIN_FILENO);
 		}
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		g_fd_signal = 0;
+		g_signal = 0;
 	}
 	return (0);
 }
