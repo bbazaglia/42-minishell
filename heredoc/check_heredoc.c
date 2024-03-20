@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/20 11:39:34 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:27:10 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,32 @@ int	create_heredoc_temp(void)
 	return (fd);
 }
 
+void	check_delimiter(t_node *head, char *heredoc_input, char *delimiter)
+{
+	char	*temp;
+
+	while (ft_strncmp(heredoc_input, delimiter, ft_strlen(delimiter)) != 0)
+	{
+		temp = heredoc_input;
+		heredoc_input = ft_strjoin(temp, "\n");
+		free(temp);
+		write(head->fd, heredoc_input, ft_strlen(heredoc_input));
+		free(heredoc_input);
+		heredoc_input = readline("> ");
+		if (!heredoc_input)
+		{
+			if (g_signal == 0)
+				printf("warning: here-document at line 1 delimited by end-of-file\n");
+			break ;
+		}
+	}
+	free(heredoc_input);
+}
+
 void	check_heredoc(t_node *head)
 {
-	char	*heredoc_prompt;
+	char	*heredoc_input;
 	char	*delimiter;
-	char	*temp;
 
 	while (head->next)
 	{
@@ -41,32 +62,16 @@ void	check_heredoc(t_node *head)
 			signal(SIGINT, sigint_cmd_handler);
 			delimiter = ft_strtrim(head->next->value, "'\"");
 			head->fd = create_heredoc_temp();
-			heredoc_prompt = readline("> ");
-			if (!heredoc_prompt)
+			heredoc_input = readline("> ");
+			if (!heredoc_input)
 			{
-				free(delimiter);
 				if (g_signal == 0)
 					printf("warning: here-document at line 1 delimited by end-of-file\n");
 				break ;
 			}
-			while (ft_strncmp(heredoc_prompt, delimiter,
-					ft_strlen(delimiter)) != 0)
-			{
-				temp = heredoc_prompt;
-				heredoc_prompt = ft_strjoin(temp, "\n");
-				free(temp);
-				write(head->fd, heredoc_prompt, ft_strlen(heredoc_prompt));
-				heredoc_prompt = readline("> ");
-				if (!heredoc_prompt)
-				{
-					free(delimiter);
-					if (g_signal == 0)
-						printf("warning: here-document at line 1 delimited by end-of-file\n");
-					break ;
-				}
-			}
-			free(delimiter);
+			check_delimiter(head, heredoc_input, delimiter);
 		}
 		head = head->next;
 	}
+	free(delimiter);
 }

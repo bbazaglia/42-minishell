@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 12:30:59 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 14:38:12 by cogata           ###   ########.fr       */
+/*   Created: 2024/03/20 14:37:13 by cogata            #+#    #+#             */
+/*   Updated: 2024/03/20 14:37:25 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "libft.h"
 
-void	print_lst_node(t_node **head)
+char	*ft_strndup(char *s, size_t n)
 {
-	int		i;
-	t_node	*temp;
+	int i;
+	char *dest;
 
+	dest = malloc(n + 1);
+	if (dest == NULL)
+		return (NULL);
 	i = 0;
-	temp = *head;
-	while (temp)
+	while (n != 0 && s[i])
 	{
-		printf("node %d\n", i);
-		printf("value: %s\n", temp->value);
-		printf("type: %d\n", temp->type);
-		printf("next_char: %c\n\n", temp->next_char);
-		temp = temp->next;
+		dest[i] = s[i];
 		i++;
+		n--;
 	}
+	dest[i] = '\0';
+	return (dest);
 }

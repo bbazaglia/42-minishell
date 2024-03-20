@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 11:39:52 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:22:40 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ void				compare(t_node **node, char **prompt, char *temp, int i);
 t_node				*compare_word(char **prompt, int type);
 t_node				*compare_quote(char **prompt, char symbol, int type);
 
+//Parse function
+void				parse(char *input, t_tree **root);
+
 // Token functions
 t_node				*tokenizer(char *prompt);
 t_node				*split_token(char **prompt);
@@ -109,12 +112,6 @@ void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
 char				**list_to_array(t_node *head);
 void				execute_command(t_tree *root);
-// void				execute_and_or(t_tree *root, int **forks, int *pos);
-// void				execute_pipe(t_tree *root, int **forks, int *pos);
-// void				open_fork(t_tree *root, char *path_name, char **args);
-// void				execute_leaf(t_tree *root, int **forks, int *pos);
-// void				execute_tree(t_tree *root, int **forks, int *pos);
-// void				wait_forks(int **forks, int pos);
 
 //Set env
 char				**insert_env_var(char **env_table, char *key, char *value);
@@ -127,15 +124,16 @@ char				**get_env_table(void);
 void				free_env_table(char **env_table);
 
 // Heredoc
-void				check_heredoc(t_node *head);
 int					create_heredoc_temp(void);
+void				check_delimiter(t_node *head, char *heredoc_input,
+						char *delimiter);
+void				check_heredoc(t_node *head);
 
 // Error message
 void				error(int err);
 
 // Utils
 void				print_lst_node(t_node **head);
-char				*ft_strndup(char *s, size_t n);
 void				printTree(t_tree *n);
 int					maxDepth(t_tree *n);
 

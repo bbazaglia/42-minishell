@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:27:57 by cogata            #+#    #+#             */
-/*   Updated: 2023/08/04 14:27:59 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:37:44 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 50
@@ -93,5 +93,6 @@ int					ft_base10_to_base16(unsigned long int nb, char type);
 void				find_format(va_list *args, const char *format, int *i,
 						int *count);
 int					ft_printf(const char *format, ...);
+char				*ft_strndup(char *s, size_t n);
 
 #endif

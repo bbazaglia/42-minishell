@@ -3,7 +3,7 @@ https://stackoverflow.com/questions/801740/c-how-to-draw-a-binary-tree-to-the-co
 The code was originally in cpp
 */
 
-#include "../include/minishell.h"
+#include "./include/minishell.h"
 
 t_tree* createNode(char *data) {
     t_tree* newNode = (t_tree*)malloc(sizeof(t_tree));
