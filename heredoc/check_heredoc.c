@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/20 16:27:10 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/20 18:34:19 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	check_heredoc(t_node *head)
 				break ;
 			}
 			check_delimiter(head, heredoc_input, delimiter);
+			free(delimiter);
 		}
 		head = head->next;
 	}
-	free(delimiter);
 }
