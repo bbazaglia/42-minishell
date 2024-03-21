@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 12:21:53 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 13:43:35 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:56:14 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	execute(t_tree *root)
 {
+	if (root == NULL)
+		return ;
 	signal(SIGINT, sigint_cmd_handler);
 	if (is_single_node(root))
 		execute_fork(root);

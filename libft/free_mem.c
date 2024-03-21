@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   free_mem.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 12:30:55 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 15:42:44 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/21 16:59:09 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/21 17:31:53 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "libft.h"
 
-void	error(int err)
+void	free_mem(t_list **list)
 {
-	if (err == SYNTAX_ERROR)
-		ft_putstr_fd("Syntax error\n", 2);
-	else if (err == MALLOC_FAILED)
-		ft_putstr_fd("Memory allocation failed\n", 2);
-	else if (err == SIGNAL_ERROR)
-		ft_putstr_fd("Error setting up signal handler\n", 2);
-	exit(EXIT_FAILURE);
+	t_list	*cur;
+
+	while (*list)
+	{
+		cur = (*list)->next;
+		free((*list)->content);
+		free(*list);
+		*list = cur;
+	}
 }

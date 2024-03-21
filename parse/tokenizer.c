@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:39 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 15:20:55 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:04:35 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_node	*create_meta_node(char **input, char *str, int move)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(t_node));
+	node = allocate_mem(1, sizeof(t_node));
 	if (node == NULL)
 		return (NULL);
 	node->value = ft_strdup(str);
@@ -97,7 +97,7 @@ t_node	*create_word_node(char *value, int type, char next_char)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(t_node));
+	node = allocate_mem(1, sizeof(t_node));
 	if (node == NULL)
 		return (NULL);
 	node->value = value;

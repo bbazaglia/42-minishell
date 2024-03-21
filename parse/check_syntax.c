@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:15 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 13:52:35 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:15:38 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_quote_syntax(char *input)
 		input++;
 	}
 	if (inside_quote)
-		error(SYNTAX_ERROR);
+		return(error(SYNTAX_ERROR));
 	return (0);
 }
 
@@ -49,24 +49,25 @@ int	check_quote_syntax(char *input)
 
 NOTE: echo hello | " " does not return error, check for it before execution
 */
-void	check_syntax(t_node *node)
+int	check_syntax(t_node *node)
 {
 	if (node->type >= AND && node->type <= PIPE)
-		error(SYNTAX_ERROR);
+		return (error(SYNTAX_ERROR));
 	while (node->next)
 	{
 		if (node->type >= AND && node->type <= PIPE)
 		{
 			if (node->next->type >= AND && node->next->type <= PIPE)
-				error(SYNTAX_ERROR);
+				return (error(SYNTAX_ERROR));
 		}
 		if (node->type >= IN_REDIR && node->type <= HEREDOC)
 		{
 			if (node->next->type >= AND && node->next->type <= HEREDOC)
-				error(SYNTAX_ERROR);
+				return (error(SYNTAX_ERROR));
 		}
 		node = node->next;
 	}
-	if (node->type >= AND && node->type <= HEREDOC)
-		error(SYNTAX_ERROR);
+	if (node->type >= PIPE && node->type <= HEREDOC)
+		return (error(SYNTAX_ERROR));
+	return (0);
 }

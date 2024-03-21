@@ -15,7 +15,6 @@ SRC = main.c \
 	check_syntax.c \
 	tokenizer.c \
 	tokenizer_utils.c \
-	error.c \
 	utils.c \
 	check_heredoc.c \
 	get_set_env.c \

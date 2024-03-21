@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 15:04:20 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:51:48 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_node				*create_word_node(char *value, int type, char next_char);
 
 // Syntax functions
 int					check_quote_syntax(char *input);
-void				check_syntax(t_node *node);
+int					check_syntax(t_node *node);
 
 // Tree functions
 void				build_tree(t_tree **root, t_node *list);
@@ -124,7 +124,7 @@ void				check_delimiter(t_node *head, char *heredoc_input,
 void				check_heredoc(t_node *head);
 
 // Utils functions
-void				error(int err);
+int					error(int err);
 void				print_lst_node(t_node **head);
 void				printTree(t_tree *n);
 int					maxDepth(t_tree *n);

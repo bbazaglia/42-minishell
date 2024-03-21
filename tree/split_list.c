@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:55:40 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 12:18:01 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:16:23 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_node	**split_list(t_node *list)
 	found = lookfor_operator(tmp, list, found);
 	if (found == 0)
 		return (NULL);
-	ptr_list = malloc(sizeof(t_node *) * 3);
+	ptr_list = allocate_mem(3, sizeof(t_node *));
 	i = 0;
 	tmp = list;
 	if (found == 1)

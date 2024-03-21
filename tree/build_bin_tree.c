@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:48:26 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 15:04:23 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:04:59 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	create_node(t_node *list, t_tree **root)
 {
-	*root = malloc(sizeof(t_tree));
+	*root = allocate_mem(1, sizeof(t_tree));
 	(*root)->list = list;
 	(*root)->right = NULL;
 	(*root)->left = NULL;
