@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:39 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 13:57:38 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:20:55 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ void	add_token(t_node **head, t_node *node)
 	else
 	{
 		while (temp->next != NULL)
-		{
 			temp = temp->next;
-		}
 		temp->next = node;
 	}
 }
@@ -76,19 +74,19 @@ t_node	*create_meta_node(char **input, char *str, int move)
 	node->value = ft_strdup(str);
 	node->fd = -1;
 	node->next = NULL;
-	if (ft_strncmp(str, "&&", 2) == 0)
+	if (!ft_strncmp(str, "&&", 2))
 		node->type = AND;
-	else if (ft_strncmp(str, "||", 2) == 0)
+	else if (!ft_strncmp(str, "||", 2))
 		node->type = OR;
-	else if (ft_strncmp(str, "|", 1) == 0)
+	else if (!ft_strncmp(str, "|", 1))
 		node->type = PIPE;
-	else if (ft_strncmp(str, ">>", 2) == 0)
+	else if (!ft_strncmp(str, ">>", 2))
 		node->type = APPEND;
-	else if (ft_strncmp(str, "<<", 2) == 0)
+	else if (!ft_strncmp(str, "<<", 2))
 		node->type = HEREDOC;
-	else if (ft_strncmp(str, "<", 1) == 0)
+	else if (!ft_strncmp(str, "<", 1))
 		node->type = IN_REDIR;
-	else if (ft_strncmp(str, ">", 1) == 0)
+	else if (!ft_strncmp(str, ">", 1))
 		node->type = OUT_REDIR;
 	*input = *input + move;
 	node->next_char = input[0][0];
