@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:28:29 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 13:46:59 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:19:36 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ void	execute_and_or(t_tree *root)
 		execute_tree(root->right);
 }
 
+void	fork_process(int fd, int std_fd, t_tree *root)
+{
+	dup2(fd, std_fd);
+	close(fd);
+	execute_tree(root);
+}
+
 void	execute_pipe(t_tree *root)
 {
 	int	fork_id[2];
@@ -61,24 +68,14 @@ void	execute_pipe(t_tree *root)
 	if (fork_id[0] == -1)
 		exit(1);
 	// to do: check for redirect
-	// open first fork
 	if (fork_id[0] == 0)
-	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		execute_tree(root->left);
-	}
+		fork_process(fd[1], STDOUT_FILENO, root->left);
 	close(fd[1]);
-	// open second fork
 	fork_id[1] = fork();
 	if (fork_id[1] == -1)
 		exit(1);
 	if (fork_id[1] == 0)
-	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		execute_tree(root->right);
-	}
+		fork_process(fd[0], STDIN_FILENO, root->right);
 	close(fd[0]);
 	waitpid(fork_id[0], &status, NULL);
 	waitpid(fork_id[1], &status, NULL);

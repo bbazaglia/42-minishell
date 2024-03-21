@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -w
 # -fsanitize=address
 
-VPATH = parse heredoc execute environ
+VPATH = tree parse heredoc execute environ
 
 INCLUDE = -I./include -I ./libft 
 

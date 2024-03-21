@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 13:59:43 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:25:39 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,23 @@ void				check_syntax(t_node *node);
 // Tree functions
 void				build_tree(t_tree **root, t_node *list);
 t_node				**split_list(t_node *list);
-void				execute_fork(t_tree *root);
-void				execute(t_tree *root);
-int					is_single_node(t_tree *root);
+int					lookfor_operator(t_node *tmp, t_node *list, int found);
+void				found_and_or(int i, int found, t_node *tmp,
+						t_node **ptr_list);
+void				found_pipe(int i, int found, t_node *tmp,
+						t_node **ptr_list);
 
 // Execution functions
+char				**list_to_array(t_node *head);
+void				execute(t_tree *root);
+int					is_single_node(t_tree *root);
+void				execute_fork(t_tree *root);
 void				execute_tree(t_tree *root);
 void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
-char				**list_to_array(t_node *head);
 void				execute_command(t_tree *root);
+void				check_status(t_tree *root);
+void				fork_process(int fd, int std_fd, t_tree *root);
 
 // Environment functions
 char				**insert_env_var(char **env_table, char *key, char *value);
