@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 14:25:39 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:04:20 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_tree
 	t_node			*list;
 	struct s_tree	*right;
 	struct s_tree	*left;
-	int				pipe_read;
 }					t_tree;
 
 // Signal functions
