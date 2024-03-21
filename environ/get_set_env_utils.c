@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_set_env_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:02:09 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 16:02:11 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:02:57 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
 char	**get_env_table(void)
 {

@@ -6,35 +6,35 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:15 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/05 10:56:25 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:52:35 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_quote_syntax(char *prompt)
+int	check_quote_syntax(char *input)
 {
 	int		inside_quote;
 	char	quote_type;
 
 	inside_quote = 0;
 	quote_type = '\0';
-	while (*prompt)
+	while (*input)
 	{
-		if (*prompt == '"' || *prompt == '\'')
+		if (*input == '"' || *input == '\'')
 		{
 			if (!inside_quote)
 			{
 				inside_quote = 1;
-				quote_type = *prompt;
+				quote_type = *input;
 			}
-			else if (*prompt == quote_type)
+			else if (*input == quote_type)
 			{
 				inside_quote = 0;
 				quote_type = '\0';
 			}
 		}
-		prompt++;
+		input++;
 	}
 	if (inside_quote)
 		error(SYNTAX_ERROR);

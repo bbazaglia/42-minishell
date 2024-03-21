@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:37:13 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 14:37:25 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:45:16 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strndup(char *s, size_t n)
 {
-	int i;
-	char *dest;
+	char	*dest;
+	int		i;
 
 	dest = malloc(n + 1);
 	if (dest == NULL)

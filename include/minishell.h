@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 15:22:40 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:59:43 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_node
 	int				type;
 	char			next_char;
 	int				fd;
-	int				last;
 	struct s_node	*next;
 }					t_node;
 
@@ -72,48 +71,37 @@ void				initialize_signals(void);
 void				sigint_handler(int signo);
 void				sigint_cmd_handler(int signo);
 
-// Terminal functions
-void				set_terminal_attributes(void);
-
-// Compare functions
-void				compare(t_node **node, char **prompt, char *temp, int i);
-t_node				*compare_word(char **prompt, int type);
-t_node				*compare_quote(char **prompt, char symbol, int type);
-
-//Parse function
+//Parser functions
 void				parse(char *input, t_tree **root);
-
-// Token functions
-t_node				*tokenizer(char *prompt);
-t_node				*split_token(char **prompt);
-t_node				*create_meta_node(char **prompt, char *str, int move);
-t_node				*create_word_node(char *value, int type, char next_char);
+t_node				*tokenizer(char *input);
+t_node				*split_token(char **input);
 void				add_token(t_node **head, t_node *node);
-t_node				**ptr_to_list(t_node *head);
-t_node				*copy_list(t_node *head);
+void				lookfor_token(t_node **node, char **input, char *temp,
+						int i);
+t_node				*lookfor_word(char **input, int type);
+t_node				*lookfor_quotes(char **input, char symbol, int type);
+t_node				*create_meta_node(char **input, char *str, int move);
+t_node				*create_word_node(char *value, int type, char next_char);
 
 // Syntax functions
-int					check_quote_syntax(char *prompt);
+int					check_quote_syntax(char *input);
 void				check_syntax(t_node *node);
 
-// Tree
+// Tree functions
 void				build_tree(t_tree **root, t_node *list);
-void				printTree(t_tree *n);
 t_node				**split_list(t_node *list);
-void				count_processes(t_tree *root, int *count_fork);
-int					**allocate_forks(int count_fork);
-void				execute_fork_command(t_tree *root);
+void				execute_fork(t_tree *root);
 void				execute(t_tree *root);
 int					is_single_node(t_tree *root);
 
-// Execution
+// Execution functions
 void				execute_tree(t_tree *root);
 void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
 char				**list_to_array(t_node *head);
 void				execute_command(t_tree *root);
 
-//Set env
+// Environment functions
 char				**insert_env_var(char **env_table, char *key, char *value);
 char				**add_env_var(char **env_table, char *var_line);
 char				**modify_env_var(char **env_table, char *var_new_line,
@@ -123,16 +111,14 @@ char				**update_env_table(char *var_line, int size);
 char				**get_env_table(void);
 void				free_env_table(char **env_table);
 
-// Heredoc
+// Heredoc functions
 int					create_heredoc_temp(void);
 void				check_delimiter(t_node *head, char *heredoc_input,
 						char *delimiter);
 void				check_heredoc(t_node *head);
 
-// Error message
+// Utils functions
 void				error(int err);
-
-// Utils
 void				print_lst_node(t_node **head);
 void				printTree(t_tree *n);
 int					maxDepth(t_tree *n);

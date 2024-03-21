@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/20 14:45:32 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 13:45:02 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/21 13:50:24 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/21 13:50:38 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-void	parse(char *input, t_tree **root)
+char	*ft_strstr(char *str, char *to_find)
 {
-	t_node	*head;
+	int	i;
+	int	j;
 
-	head = tokenizer(input);
-	check_syntax(head);
-	check_heredoc(head);
-	build_tree(root, head);
+	if (*to_find == '\0')
+		return (str);
+	if (*str == '\0')
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		j = 0;
+		if (str[i] == to_find[j])
+		{
+			while (to_find[j] && str[i + j] == to_find[j])
+				j++;
+		}
+		if (to_find[j] == '\0')
+			return (&str[i]);
+		i++;
+	}
+	return (0);
 }

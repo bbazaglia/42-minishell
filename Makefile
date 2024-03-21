@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -w
 # -fsanitize=address
 
-VPATH = parse heredoc tree
+VPATH = parse heredoc execute environ
 
 INCLUDE = -I./include -I ./libft 
 
@@ -13,9 +13,8 @@ LIBFT = ./libft/libft.a
 
 SRC = main.c \
 	check_syntax.c \
-	compare.c \
-	token_list.c \
 	tokenizer.c \
+	tokenizer_utils.c \
 	error.c \
 	utils.c \
 	check_heredoc.c \
@@ -25,7 +24,9 @@ SRC = main.c \
 	build_bin_tree.c \
 	print_tree.c \
 	execution.c \
-	parser.c
+	parser.c \
+	split_list.c \
+	execution_utils.c 
 
 OBJ = obj
 

@@ -5,109 +5,107 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 12:30:33 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/04 15:51:29 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/04 12:30:39 by cogata            #+#    #+#             */
+/*   Updated: 2024/03/21 13:57:38 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_node	*tokenizer(char *prompt)
+t_node	*tokenizer(char *input)
 {
 	int		i;
 	t_node	*head;
 	t_node	*copy;
 	t_node	*node;
-	t_node	**ptr_list;
 
 	head = NULL;
-	check_quote_syntax(prompt);
-	while (*prompt != '\0')
+	check_quote_syntax(input);
+	while (*input != '\0')
 	{
-		node = split_token(&prompt);
+		node = split_token(&input);
 		if (node == NULL)
 			break ;
 		add_token(&head, node);
-		// if(node->type == WORD);
-		// 	count_fork++;
 	}
-	// node->last = 1;
-	// print_lst_node(&head);
-	copy = copy_list(head);
-	ptr_list = ptr_to_list(copy);
-	i = 0;
-	while (ptr_list[i + 1])
-		i++;
-	ptr_list[i]->last = 1;
 	return (head);
 }
 
-t_node	*copy_list(t_node *head)
+t_node	*split_token(char **input)
 {
-	t_node	*tmp;
-	t_node	*tmp2;
-	t_node	*copy;
-	t_node	*head_copy;
+	int		i;
+	char	*temp;
+	t_node	*node;
 
-	tmp = head;
-	copy = create_word_node(tmp->value, tmp->type, tmp->next_char);
-	head_copy = copy;
-	tmp = tmp->next;
-	while (tmp)
+	i = 0;
+	temp = *input;
+	node = NULL;
+	while (temp[i] == ' ')
 	{
-		tmp2 = create_word_node(tmp->value, tmp->type, tmp->next_char);
-		copy->next = tmp2;
-		copy = copy->next;
-		tmp = tmp->next;
+		i++;
+		*input = *input + 1;
 	}
-	return (head_copy);
+	lookfor_token(&node, input, temp, i);
+	return (node);
 }
 
-t_node	**ptr_to_list(t_node *head)
+void	add_token(t_node **head, t_node *node)
 {
-	int i;
-	t_node *tmp;
-	t_node *tmp2;
-	t_node **ptr_list;
-	int count_ptr;
-	int count_pipe;
+	t_node	*temp;
 
-	tmp = head;
-	count_ptr = 0;
-	count_pipe = 0;
-	while (tmp)
+	temp = *head;
+	if (*head == NULL)
+		*head = node;
+	else
 	{
-		if (tmp->type == PIPE || tmp->type == AND || tmp->type == OR)
+		while (temp->next != NULL)
 		{
-			if (tmp->type == PIPE)
-				count_pipe++;
-			count_ptr++;
+			temp = temp->next;
 		}
-		tmp = tmp->next;
+		temp->next = node;
 	}
-	count_ptr = (count_ptr * 2) + 1;
-	ptr_list = ft_calloc(sizeof(t_node), count_ptr);
-	i = 0;
-	tmp = head;
-	while (tmp)
-	{
-		if (tmp->type != PIPE && tmp->type != AND && tmp->type != OR)
-		{
-			ptr_list[i] = tmp;
-			while (tmp->next && tmp->next->type != PIPE
-				&& tmp->next->type != AND && tmp->next->type != OR)
-				tmp = tmp->next;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		else
-		{
-			ptr_list[i] = tmp;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		tmp = tmp2;
-		i++;
-	}
-	return (ptr_list);
+}
+
+t_node	*create_meta_node(char **input, char *str, int move)
+{
+	t_node	*node;
+
+	node = malloc(sizeof(t_node));
+	if (node == NULL)
+		return (NULL);
+	node->value = ft_strdup(str);
+	node->fd = -1;
+	node->next = NULL;
+	if (ft_strncmp(str, "&&", 2) == 0)
+		node->type = AND;
+	else if (ft_strncmp(str, "||", 2) == 0)
+		node->type = OR;
+	else if (ft_strncmp(str, "|", 1) == 0)
+		node->type = PIPE;
+	else if (ft_strncmp(str, ">>", 2) == 0)
+		node->type = APPEND;
+	else if (ft_strncmp(str, "<<", 2) == 0)
+		node->type = HEREDOC;
+	else if (ft_strncmp(str, "<", 1) == 0)
+		node->type = IN_REDIR;
+	else if (ft_strncmp(str, ">", 1) == 0)
+		node->type = OUT_REDIR;
+	*input = *input + move;
+	node->next_char = input[0][0];
+	return (node);
+}
+
+t_node	*create_word_node(char *value, int type, char next_char)
+{
+	t_node	*node;
+
+	node = malloc(sizeof(t_node));
+	if (node == NULL)
+		return (NULL);
+	node->value = value;
+	node->type = type;
+	node->next_char = next_char;
+	node->fd = -1;
+	node->next = NULL;
+	return (node);
 }

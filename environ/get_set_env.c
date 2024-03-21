@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_set_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 17:12:59 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/06 17:13:00 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:03:00 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
 char	**insert_env_var(char **env_table, char *key, char *value)
 {
