@@ -3,24 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:28:29 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 15:01:56 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:29:34 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	check_status(t_tree *root)
+int	check_status(t_tree *root, int status)
 {
-	int	status;
-
 	if (root->list->type == AND && WIFEXITED(status)
 		&& WEXITSTATUS(status) != 0)
-		exit(1);
+	{
+		free_mem(get_mem_address());
+		return (ERROR);
+	}
 	if (root->list->type == OR && WIFEXITED(status) && WEXITSTATUS(status) == 0)
-		exit(1);
+	{
+		free_mem(get_mem_address());
+		return (ERROR);
+	}
+	return (OK);
 }
 
 void	execute_and_or(t_tree *root)
@@ -28,23 +33,25 @@ void	execute_and_or(t_tree *root)
 	int	status;
 	int	fork_id;
 
+	status = 0;
 	if (root->left->list->type >= WORD && root->left->list->type <= DOUB_QUOTE)
 	{
 		fork_id = fork();
 		if (fork_id == 0)
 			execute_tree(root->left);
-		waitpid(fork_id, &status, NULL);
+		waitpid(fork_id, &status, 0);
 	}
 	else if (root->left)
 		execute_tree(root->left);
-	check_status(root);
+	if (check_status(root, status))
+		return ;
 	if (root->right->list->type >= WORD
 		&& root->right->list->type <= DOUB_QUOTE)
 	{
 		fork_id = fork();
 		if (fork_id == 0)
 			execute_tree(root->right);
-		waitpid(fork_id, &status, NULL);
+		waitpid(fork_id, &status, 0);
 	}
 	else if (root->right)
 		execute_tree(root->right);
@@ -77,8 +84,8 @@ void	execute_pipe(t_tree *root)
 	if (fork_id[1] == 0)
 		fork_process(fd[0], STDIN_FILENO, root->right);
 	close(fd[0]);
-	waitpid(fork_id[0], &status, NULL);
-	waitpid(fork_id[1], &status, NULL);
+	waitpid(fork_id[0], &status, 0);
+	waitpid(fork_id[1], &status, 0);
 }
 
 char	**list_to_array(t_node *head)
@@ -95,7 +102,7 @@ char	**list_to_array(t_node *head)
 		count_ptr++;
 		tmp = tmp->next;
 	}
-	args = ft_calloc(count_ptr + 1, sizeof(char *));
+	args = allocate_mem(count_ptr + 1, sizeof(char *));
 	i = 0;
 	while (i < count_ptr)
 	{
