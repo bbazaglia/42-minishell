@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:08 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/25 11:34:54 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:46:13 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	main(void)
 	struct termios	term;
 	t_tree			*root;
 
-	root = NULL;
 	fd = dup(STDIN_FILENO);
 	tcgetattr(STDIN_FILENO, &term);
 	while (1)
 	{
+		root = NULL;
 		input = init_read();
 		if (!ft_strlen(input))
 			continue ;
@@ -47,6 +47,7 @@ int	main(void)
 		// execute(root);
 		dup2(fd, STDIN_FILENO);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		free_mem(get_mem_address());
 	}
 	return (0);
 }

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/25 10:27:53 by bbazagli         ###   ########.fr       */
+=======
+/*   Updated: 2024/03/22 17:04:39 by cogata           ###   ########.fr       */
+>>>>>>> 7a45abff7c2965287cc8e11c555ac9eaaae9e7ea
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +30,9 @@
 # include <unistd.h>
 
 extern volatile int	g_signal;
+
+# define OK 0
+# define ERROR 1
 
 enum				e_token
 {
@@ -105,7 +112,7 @@ void				execute_tree(t_tree *root);
 void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
 void				execute_command(t_tree *root);
-void				check_status(t_tree *root);
+int					check_status(t_tree *root, int status);
 void				fork_process(int fd, int std_fd, t_tree *root);
 
 // Environment functions

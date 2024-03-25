@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:59 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/25 11:28:36 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:47:34 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	error(int err)
 		ft_putstr_fd("Memory allocation failed\n", 2);
 	else if (err == SIGNAL_ERROR)
 		ft_putstr_fd("Error setting up signal handler\n", 2);
-	free_mem(get_mem_address());
+	// free_mem(get_mem_address());
 	return (1);
 }
 

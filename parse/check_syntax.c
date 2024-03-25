@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:15 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 16:15:38 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:11:47 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_quote_syntax(char *input)
 		input++;
 	}
 	if (inside_quote)
-		return(error(SYNTAX_ERROR));
+		return (error(SYNTAX_ERROR));
 	return (0);
 }
 
@@ -67,7 +67,7 @@ int	check_syntax(t_node *node)
 		}
 		node = node->next;
 	}
-	if (node->type >= PIPE && node->type <= HEREDOC)
+	if (node->type >= AND && node->type <= HEREDOC)
 		return (error(SYNTAX_ERROR));
 	return (0);
 }

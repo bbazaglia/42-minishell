@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 12:21:53 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 15:56:14 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:59:18 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ void	execute_fork(t_tree *root)
 	else if (fork_id == 0)
 	{
 		if (execve(path_name, args, NULL) == -1)
+		{
+			free_mem(get_mem_address());
 			exit(1);
+		}
 	}
-	waitpid(fork_id, &status, NULL);
+	waitpid(fork_id, &status, 0);
 }
 
 void	execute_tree(t_tree *root)
@@ -75,5 +78,8 @@ void	execute_command(t_tree *root)
 	path_name = ft_strjoin(path, root->list->value);
 	args = list_to_array(root->list);
 	if (execve(path_name, args, NULL) == -1)
+	{
+		free_mem(get_mem_address());
 		exit(1);
+	}
 }
