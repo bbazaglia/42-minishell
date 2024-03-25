@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:08 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 17:22:26 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:34:54 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	main(void)
 			continue ;
 		add_history(input);
 		parse(input, &root);
-		execute(root);
+		printTree(root);
+		// execute(root);
 		dup2(fd, STDIN_FILENO);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	}

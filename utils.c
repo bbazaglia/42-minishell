@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:59 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 17:06:10 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:28:36 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ void	print_lst_node(t_node **head)
 		printf("node %d\n", i);
 		printf("value: %s\n", temp->value);
 		printf("type: %d\n", temp->type);
-		printf("next_char: %c\n\n", temp->next_char);
+		printf("next_char: %c\n", temp->next_char);
+		if (temp->prev)
+			printf("prev: %s\n\n", temp->prev->value);
+		else
+			printf("\n\n");
 		temp = temp->next;
 		i++;
 	}

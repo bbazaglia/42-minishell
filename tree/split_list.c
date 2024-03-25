@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:55:40 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/21 17:16:23 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 10:59:45 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,3 +118,24 @@ t_node	**split_list(t_node *list)
 		found_pipe(i, found, tmp, ptr_list);
 	return (ptr_list);
 }
+
+/*
+For an input like this:
+ech oi && echo hi | echo hello | echo bonjour || echo haha
+
+                                ||                               
+                &&                               haha               
+        oi               |       
+    |       bonjour   
+  hi   hello 
+
+
+I want it to look like:
+                                ||                               
+                &&                               echo               
+        echo               |       
+    |       echo   
+  ech   echo 
+
+
+*/

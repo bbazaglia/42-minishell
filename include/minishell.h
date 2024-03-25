@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:33:17 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 15:51:48 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 10:27:53 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_node
 	char			next_char;
 	int				fd;
 	struct s_node	*next;
+	struct s_node	*prev;
 }					t_node;
 
 typedef struct s_tree

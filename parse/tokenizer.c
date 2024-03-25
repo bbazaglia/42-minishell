@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:39 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 17:04:35 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:24:52 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_node	*split_token(char **input)
 	return (node);
 }
 
-void	add_token(t_node **head, t_node *node)
+/* void	add_token(t_node **head, t_node *node)
 {
 	t_node	*temp;
 
@@ -61,6 +61,26 @@ void	add_token(t_node **head, t_node *node)
 		while (temp->next != NULL)
 			temp = temp->next;
 		temp->next = node;
+	}
+} */
+
+void	add_token(t_node **head, t_node *node)
+{
+	t_node	*temp;
+
+	temp = *head;
+	if (*head == NULL)
+	{
+		*head = node;
+		node->prev = NULL;
+		node->next = NULL;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = node;
+		node->prev = temp;
 	}
 }
 
