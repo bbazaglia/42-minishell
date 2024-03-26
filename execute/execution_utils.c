@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:28:29 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/22 17:29:34 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/26 10:46:11 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_status(t_tree *root, int status)
+int	check_status(t_tree *root, int *status)
 {
-	if (root->list->type == AND && WIFEXITED(status)
-		&& WEXITSTATUS(status) != 0)
+	if (root->list->type == AND && WIFEXITED(*status)
+		&& WEXITSTATUS(*status) != 0)
 	{
-		free_mem(get_mem_address());
+		// free_mem(get_mem_address());
 		return (ERROR);
 	}
-	if (root->list->type == OR && WIFEXITED(status) && WEXITSTATUS(status) == 0)
+	if (root->list->type == OR && WIFEXITED(*status) && WEXITSTATUS(*status) == 0)
 	{
-		free_mem(get_mem_address());
+		// free_mem(get_mem_address());
 		return (ERROR);
 	}
 	return (OK);
@@ -30,10 +30,9 @@ int	check_status(t_tree *root, int status)
 
 void	execute_and_or(t_tree *root)
 {
-	int	status;
+	static int	status;
 	int	fork_id;
 
-	status = 0;
 	if (root->left->list->type >= WORD && root->left->list->type <= DOUB_QUOTE)
 	{
 		fork_id = fork();
@@ -43,7 +42,7 @@ void	execute_and_or(t_tree *root)
 	}
 	else if (root->left)
 		execute_tree(root->left);
-	if (check_status(root, status))
+	if (check_status(root, &status))
 		return ;
 	if (root->right->list->type >= WORD
 		&& root->right->list->type <= DOUB_QUOTE)

@@ -6,7 +6,7 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:21:51 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/25 14:21:55 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:40:38 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int					check_syntax(t_node *node);
 // Tree functions
 void				build_tree(t_tree **root, t_node *list);
 t_node				**split_list(t_node *list);
-int					lookfor_operator(t_node *tmp, t_node *list, int found);
+// int					lookfor_operator(t_node *tmp, t_node *list, int found);
 void				found_and_or(int i, int found, t_node *tmp,
 						t_node **ptr_list);
 void				found_pipe(int i, int found, t_node *tmp,
@@ -108,7 +108,7 @@ void				execute_tree(t_tree *root);
 void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
 void				execute_command(t_tree *root);
-int					check_status(t_tree *root, int status);
+// int					check_status(t_tree *root, int status);
 void				fork_process(int fd, int std_fd, t_tree *root);
 
 // Environment functions

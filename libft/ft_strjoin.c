@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 18:35:06 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/22 16:06:29 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/26 11:03:09 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	res = allocate_mem(1, len1 + len2 + 1);
+	res = ft_calloc(1, len1 + len2 + 1);
 	if (res == NULL)
 		return (NULL);
 	ft_copy_str(s1, s2, res);

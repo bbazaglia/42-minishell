@@ -6,113 +6,65 @@
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:55:40 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/25 17:26:14 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:30:39 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int lookfor_operator(t_node *tmp, t_node *list, int found)
+t_node	*last_node(t_node *list)
 {
-	while (tmp)
-	{
-		if (tmp->type == AND || tmp->type == OR)
-		{
-			found = 1;
-			break;
-		}
-		tmp = tmp->next;
-	}
-	if (found == 0)
-	{
-		tmp = list;
-		while (tmp)
-		{
-			if (tmp->type == PIPE)
-			{
-				found = 2;
-				break;
-			}
-			tmp = tmp->next;
-		}
-	}
-	return (found);
+	t_node	*last;
+
+	last = list;
+	while (last->next)
+		last = last->next;
+	return (last);
 }
 
-void found_and_or(int i, int found, t_node *tmp, t_node **ptr_list)
+t_node	*lookfor_operator(t_node *last)
 {
-	t_node *tmp2;
+	t_node	*cur;
 
-	found = 0;
-	while (tmp)
+	cur = last;
+	while (cur->prev)
 	{
-		if (found == 0 && (tmp->type == AND || tmp->type == OR))
-		{
-			found = 1;
-			ptr_list[i] = tmp;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		else
-		{
-			ptr_list[i] = tmp;
-			while ((found == 1 && tmp->next) || (tmp->next && tmp->next->type != AND && tmp->next->type != OR))
-				tmp = tmp->next;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		tmp = tmp2;
-		i++;
+		if (cur->type == AND || cur->type == OR)
+			return (cur);
+		cur = cur->prev; 
 	}
+	cur = last;
+	while (cur->prev)
+	{
+		if (cur->type == PIPE)
+			return (cur);
+		cur = cur->prev;
+	}
+	return (NULL);
 }
 
-void found_pipe(int i, int found, t_node *tmp, t_node **ptr_list)
+t_node	**split_list(t_node *list)
 {
-	t_node *tmp2;
-
-	found = 0;
-	while (tmp)
-	{
-		if (found == 0 && tmp->type == PIPE)
-		{
-			found = 1;
-			ptr_list[i] = tmp;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		else
-		{
-			ptr_list[i] = tmp;
-			while ((found == 1 && tmp->next) || (tmp->next && tmp->next->type != PIPE))
-				tmp = tmp->next;
-			tmp2 = tmp->next;
-			tmp->next = NULL;
-		}
-		tmp = tmp2;
-		i++;
-	}
-}
-
-t_node **split_list(t_node *list)
-{
-	t_node *tmp;
-	t_node *tmp2;
+	t_node *last;
+	t_node *operator;
 	t_node **ptr_list;
-	int i;
-	int found;
 
-	i = 0;
-	found = 0;
-	tmp = list;
-	found = lookfor_operator(tmp, list, found);
-	if (found == 0)
-		return (NULL);
-	ptr_list = allocate_mem(3, sizeof(t_node *));
-	i = 0;
-	tmp = list;
-	if (found == 1)
-		found_and_or(i, found, tmp, ptr_list);
-	else if (found == 2)
-		found_pipe(i, found, tmp, ptr_list);
+	last = last_node(list);
+	operator = lookfor_operator(last);
+	if (!operator && list)
+		return NULL;
+	if (operator)
+	{
+		ptr_list = allocate_mem(3, sizeof(t_node *));
+		ptr_list[0] = list;
+		ptr_list[1] = operator;
+		ptr_list[2] = operator->next;
+		operator->prev->next = NULL;
+		operator->prev = NULL;
+		operator->next->prev = NULL;
+	}
 	return (ptr_list);
 }

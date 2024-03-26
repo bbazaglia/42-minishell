@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 12:21:53 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/22 16:59:18 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/26 11:04:09 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	execute_fork(t_tree *root)
 
 	path = "/usr/bin/";
 	path_name = ft_strjoin(path, root->list->value);
+	
 	args = list_to_array(root->list);
 	fork_id = fork();
 	if (fork_id == -1)
