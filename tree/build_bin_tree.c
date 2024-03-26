@@ -24,6 +24,8 @@ void	build_tree(t_tree **root, t_node *list)
 {
 	t_node	**ptr_list;
 
+	if (!list)
+		return ;
 	ptr_list = split_list(list);
 	if (!ptr_list && list)
 		return (create_node(list, root));
