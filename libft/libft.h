@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:27:57 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 14:37:44 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/21 17:39:01 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,9 @@ void				find_format(va_list *args, const char *format, int *i,
 						int *count);
 int					ft_printf(const char *format, ...);
 char				*ft_strndup(char *s, size_t n);
+t_list				**get_mem_address(void);
+void				collect_mem(void *content);
+void				*allocate_mem(size_t nmemb, size_t size);
+void				free_mem(t_list **list);
 
 #endif

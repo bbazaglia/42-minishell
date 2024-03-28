@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:15 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/05 10:56:25 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:11:47 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_quote_syntax(char *prompt)
+int	check_quote_syntax(char *input)
 {
 	int		inside_quote;
 	char	quote_type;
 
 	inside_quote = 0;
 	quote_type = '\0';
-	while (*prompt)
+	while (*input)
 	{
-		if (*prompt == '"' || *prompt == '\'')
+		if (*input == '"' || *input == '\'')
 		{
 			if (!inside_quote)
 			{
 				inside_quote = 1;
-				quote_type = *prompt;
+				quote_type = *input;
 			}
-			else if (*prompt == quote_type)
+			else if (*input == quote_type)
 			{
 				inside_quote = 0;
 				quote_type = '\0';
 			}
 		}
-		prompt++;
+		input++;
 	}
 	if (inside_quote)
-		error(SYNTAX_ERROR);
+		return (error(SYNTAX_ERROR));
 	return (0);
 }
 
@@ -49,24 +49,25 @@ int	check_quote_syntax(char *prompt)
 
 NOTE: echo hello | " " does not return error, check for it before execution
 */
-void	check_syntax(t_node *node)
+int	check_syntax(t_node *node)
 {
 	if (node->type >= AND && node->type <= PIPE)
-		error(SYNTAX_ERROR);
+		return (error(SYNTAX_ERROR));
 	while (node->next)
 	{
 		if (node->type >= AND && node->type <= PIPE)
 		{
 			if (node->next->type >= AND && node->next->type <= PIPE)
-				error(SYNTAX_ERROR);
+				return (error(SYNTAX_ERROR));
 		}
 		if (node->type >= IN_REDIR && node->type <= HEREDOC)
 		{
 			if (node->next->type >= AND && node->next->type <= HEREDOC)
-				error(SYNTAX_ERROR);
+				return (error(SYNTAX_ERROR));
 		}
 		node = node->next;
 	}
 	if (node->type >= AND && node->type <= HEREDOC)
-		error(SYNTAX_ERROR);
+		return (error(SYNTAX_ERROR));
+	return (0);
 }

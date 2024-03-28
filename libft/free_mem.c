@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   free_mem.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/22 16:01:34 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/21 17:40:28 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/21 16:59:09 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/22 10:56:43 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+void	free_mem(t_list **list)
 {
-	char	*dest;
-	size_t	len;
-	int		i;
+	t_list	*cur;
 
-	len = ft_strlen(s);
-	dest = allocate_mem(1, len + 1);
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
+	while (*list)
 	{
-		dest[i] = s[i];
-		i++;
+		cur = (*list)->next;
+		free((*list)->content);
+		(*list)->content = NULL;
+		free(*list);
+		*list = NULL;
+		*list = cur;
 	}
-	dest[i] = '\0';
-	return (dest);
 }

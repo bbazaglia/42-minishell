@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:15:35 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/20 16:27:10 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/26 11:03:25 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int	create_heredoc_temp(void)
 	return (fd);
 }
 
+void	sigquit_received(void)
+{
+	if (g_signal == 0)
+		printf("warning: here-document at line 1 delimited by end-of-file\n");
+}
+
 void	check_delimiter(t_node *head, char *heredoc_input, char *delimiter)
 {
 	char	*temp;
@@ -42,8 +48,7 @@ void	check_delimiter(t_node *head, char *heredoc_input, char *delimiter)
 		heredoc_input = readline("> ");
 		if (!heredoc_input)
 		{
-			if (g_signal == 0)
-				printf("warning: here-document at line 1 delimited by end-of-file\n");
+			sigquit_received();
 			break ;
 		}
 	}
@@ -65,13 +70,12 @@ void	check_heredoc(t_node *head)
 			heredoc_input = readline("> ");
 			if (!heredoc_input)
 			{
-				if (g_signal == 0)
-					printf("warning: here-document at line 1 delimited by end-of-file\n");
+				sigquit_received();
 				break ;
 			}
 			check_delimiter(head, heredoc_input, delimiter);
+			free(delimiter);
 		}
 		head = head->next;
 	}
-	free(delimiter);
 }

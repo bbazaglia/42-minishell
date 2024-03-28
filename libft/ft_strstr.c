@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 12:30:55 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/07 15:42:44 by bbazagli         ###   ########.fr       */
+/*   Created: 2024/03/21 13:50:24 by bbazagli          #+#    #+#             */
+/*   Updated: 2024/03/21 13:50:38 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "libft.h"
 
-void	error(int err)
+char	*ft_strstr(char *str, char *to_find)
 {
-	if (err == SYNTAX_ERROR)
-		ft_putstr_fd("Syntax error\n", 2);
-	else if (err == MALLOC_FAILED)
-		ft_putstr_fd("Memory allocation failed\n", 2);
-	else if (err == SIGNAL_ERROR)
-		ft_putstr_fd("Error setting up signal handler\n", 2);
-	exit(EXIT_FAILURE);
+	int	i;
+	int	j;
+
+	if (*to_find == '\0')
+		return (str);
+	if (*str == '\0')
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		j = 0;
+		if (str[i] == to_find[j])
+		{
+			while (to_find[j] && str[i + j] == to_find[j])
+				j++;
+		}
+		if (to_find[j] == '\0')
+			return (&str[i]);
+		i++;
+	}
+	return (0);
 }

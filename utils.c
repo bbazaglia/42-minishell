@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:30:59 by cogata            #+#    #+#             */
-/*   Updated: 2024/03/20 14:38:12 by cogata           ###   ########.fr       */
+/*   Updated: 2024/03/25 11:47:34 by bbazagli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
+
+int	error(int err)
+{
+	if (err == SYNTAX_ERROR)
+		ft_putstr_fd("Syntax error\n", 2);
+	else if (err == MALLOC_FAILED)
+		ft_putstr_fd("Memory allocation failed\n", 2);
+	else if (err == SIGNAL_ERROR)
+		ft_putstr_fd("Error setting up signal handler\n", 2);
+	// free_mem(get_mem_address());
+	return (1);
+}
 
 void	print_lst_node(t_node **head)
 {
@@ -24,7 +36,11 @@ void	print_lst_node(t_node **head)
 		printf("node %d\n", i);
 		printf("value: %s\n", temp->value);
 		printf("type: %d\n", temp->type);
-		printf("next_char: %c\n\n", temp->next_char);
+		printf("next_char: %c\n", temp->next_char);
+		if (temp->prev)
+			printf("prev: %s\n\n", temp->prev->value);
+		else
+			printf("\n\n");
 		temp = temp->next;
 		i++;
 	}
