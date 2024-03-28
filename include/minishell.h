@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:21:51 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/26 10:40:38 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:53:39 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ extern volatile int	g_signal;
 
 # define OK 0
 # define ERROR 1
+# define WRITE 1
+# define READ 0
 
 enum				e_token
 {
@@ -109,7 +111,8 @@ void				execute_and_or(t_tree *root);
 void				execute_pipe(t_tree *root);
 void				execute_command(t_tree *root);
 // int					check_status(t_tree *root, int status);
-void				fork_process(int fd, int std_fd, t_tree *root);
+void				fork_process(int dup_fd, int std_fd, int close_fd,
+						t_tree *root);
 
 // Environment functions
 char				**insert_env_var(char **env_table, char *key, char *value);

@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:28:29 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/26 10:46:11 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:55:41 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_status(t_tree *root, int *status)
+int	check_status(t_tree *root, int status, int i)
 {
-	if (root->list->type == AND && WIFEXITED(*status)
-		&& WEXITSTATUS(*status) != 0)
+	if (root->list->type == AND && WIFEXITED(status)
+		&& WEXITSTATUS(status) != 0)
 	{
 		// free_mem(get_mem_address());
 		return (ERROR);
 	}
-	if (root->list->type == OR && WIFEXITED(*status) && WEXITSTATUS(*status) == 0)
+	if (root->list->type == OR && WIFEXITED(status) && WEXITSTATUS(status) == 0)
 	{
 		// free_mem(get_mem_address());
 		return (ERROR);
@@ -30,36 +30,33 @@ int	check_status(t_tree *root, int *status)
 
 void	execute_and_or(t_tree *root)
 {
-	static int	status;
-	int	fork_id;
+	static int	i;
+	int			status;
+	int			fork_id[2];
 
-	if (root->left->list->type >= WORD && root->left->list->type <= DOUB_QUOTE)
-	{
-		fork_id = fork();
-		if (fork_id == 0)
-			execute_tree(root->left);
-		waitpid(fork_id, &status, 0);
-	}
-	else if (root->left)
+	i++;
+	status = 0;
+	fork_id[0] = fork();
+	if (fork_id[0] == 0)
 		execute_tree(root->left);
-	if (check_status(root, &status))
-		return ;
-	if (root->right->list->type >= WORD
-		&& root->right->list->type <= DOUB_QUOTE)
+	else
+		waitpid(fork_id[0], &status, 0);
+	if (!check_status(root, status, i))
 	{
-		fork_id = fork();
-		if (fork_id == 0)
+		fork_id[1] = fork();
+		if (fork_id[1] == 0)
 			execute_tree(root->right);
-		waitpid(fork_id, &status, 0);
+		else
+			waitpid(fork_id[1], &status, 0);
 	}
-	else if (root->right)
-		execute_tree(root->right);
+	exit(WEXITSTATUS(status));
 }
 
-void	fork_process(int fd, int std_fd, t_tree *root)
+void	fork_process(int dup_fd, int std_fd, int close_fd, t_tree *root)
 {
-	dup2(fd, std_fd);
-	close(fd);
+	dup2(dup_fd, std_fd);
+	close(dup_fd);
+	close(close_fd);
 	execute_tree(root);
 }
 
@@ -75,16 +72,17 @@ void	execute_pipe(t_tree *root)
 		exit(1);
 	// to do: check for redirect
 	if (fork_id[0] == 0)
-		fork_process(fd[1], STDOUT_FILENO, root->left);
-	close(fd[1]);
+		fork_process(fd[WRITE], STDOUT_FILENO, fd[READ], root->left);
+	close(fd[WRITE]);
 	fork_id[1] = fork();
 	if (fork_id[1] == -1)
 		exit(1);
 	if (fork_id[1] == 0)
-		fork_process(fd[0], STDIN_FILENO, root->right);
-	close(fd[0]);
-	waitpid(fork_id[0], &status, 0);
-	waitpid(fork_id[1], &status, 0);
+		fork_process(fd[READ], STDIN_FILENO, fd[WRITE], root->right);
+	close(fd[READ]);
+	waitpid(fork_id[READ], &status, 0);
+	waitpid(fork_id[WRITE], &status, 0);
+	exit(WEXITSTATUS(status));
 }
 
 char	**list_to_array(t_node *head)

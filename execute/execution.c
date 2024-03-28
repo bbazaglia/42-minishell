@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbazagli <bbazagli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cogata <cogata@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 12:21:53 by bbazagli          #+#    #+#             */
-/*   Updated: 2024/03/26 11:04:09 by bbazagli         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:52:51 by cogata           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,23 @@
 
 void	execute(t_tree *root)
 {
+	int	fork_id;
+	int	status;
+
 	if (root == NULL)
 		return ;
 	signal(SIGINT, sigint_cmd_handler);
 	if (is_single_node(root))
 		execute_fork(root);
 	else
-		execute_tree(root);
+	{
+		fork_id = fork();
+		if (fork_id == -1)
+			exit(1);
+		if (fork_id == 0)
+			execute_tree(root);
+		waitpid(fork_id, &status, 0);
+	}
 }
 
 int	is_single_node(t_tree *root)
@@ -43,7 +53,6 @@ void	execute_fork(t_tree *root)
 
 	path = "/usr/bin/";
 	path_name = ft_strjoin(path, root->list->value);
-	
 	args = list_to_array(root->list);
 	fork_id = fork();
 	if (fork_id == -1)
