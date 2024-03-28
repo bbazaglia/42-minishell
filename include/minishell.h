@@ -11,28 +11,30 @@
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
-# include "../libft/libft.h"
-# include <ctype.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <termios.h>
-# include <unistd.h>
+#include "../libft/libft.h"
+#include <ctype.h>
+#include <fcntl.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <termios.h>
+#include <unistd.h>
+#include <limits.h>
 
-extern volatile int	g_signal;
+extern volatile int g_signal;
 
-# define OK 0
-# define ERROR 1
-# define WRITE 1
-# define READ 0
+#define OK 0
+#define ERROR 1
+#define WRITE 1
+#define READ 0
+#define PATH_MAX 1024
 
-enum				e_token
+enum e_token
 {
 	AND = 1,
 	OR,
@@ -47,7 +49,7 @@ enum				e_token
 	DOUB_QUOTE,
 };
 
-enum				e_error
+enum e_error
 {
 	SYNTAX_ERROR = 1,
 	MALLOC_FAILED,
@@ -56,84 +58,94 @@ enum				e_error
 
 typedef struct s_node
 {
-	char			*value;
-	int				type;
-	char			next_char;
-	int				fd;
-	struct s_node	*next;
-	struct s_node	*prev;
-}					t_node;
+	char *value;
+	int type;
+	char next_char;
+	int fd;
+	struct s_node *next;
+	struct s_node *prev;
+} t_node;
 
 typedef struct s_tree
 {
-	t_node			*list;
-	struct s_tree	*right;
-	struct s_tree	*left;
-}					t_tree;
+	t_node *list;
+	struct s_tree *right;
+	struct s_tree *left;
+} t_tree;
 
 // Signal functions
-void				initialize_signals(void);
-void				sigint_handler(int signo);
-void				sigint_cmd_handler(int signo);
+void initialize_signals(void);
+void sigint_handler(int signo);
+void sigint_cmd_handler(int signo);
 
-//Parser functions
-void				parse(char *input, t_tree **root);
-t_node				*tokenizer(char *input);
-t_node				*split_token(char **input);
-void				add_token(t_node **head, t_node *node);
-void				lookfor_token(t_node **node, char **input, char *temp,
-						int i);
-t_node				*lookfor_word(char **input, int type);
-t_node				*lookfor_quotes(char **input, char symbol, int type);
-t_node				*create_meta_node(char **input, char *str, int move);
-t_node				*create_word_node(char *value, int type, char next_char);
+// Parser functions
+void parse(char *input, t_tree **root);
+t_node *tokenizer(char *input);
+t_node *split_token(char **input);
+void add_token(t_node **head, t_node *node);
+void lookfor_token(t_node **node, char **input, char *temp,
+				   int i);
+t_node *lookfor_word(char **input, int type);
+t_node *lookfor_quotes(char **input, char symbol, int type);
+t_node *create_meta_node(char **input, char *str, int move);
+t_node *create_word_node(char *value, int type, char next_char);
 
 // Syntax functions
-int					check_quote_syntax(char *input);
-int					check_syntax(t_node *node);
+int check_quote_syntax(char *input);
+int check_syntax(t_node *node);
 
 // Tree functions
-void				build_tree(t_tree **root, t_node *list);
-t_node				**split_list(t_node *list);
+void build_tree(t_tree **root, t_node *list);
+t_node **split_list(t_node *list);
 // int					lookfor_operator(t_node *tmp, t_node *list, int found);
-void				found_and_or(int i, int found, t_node *tmp,
-						t_node **ptr_list);
-void				found_pipe(int i, int found, t_node *tmp,
-						t_node **ptr_list);
+void found_and_or(int i, int found, t_node *tmp,
+				  t_node **ptr_list);
+void found_pipe(int i, int found, t_node *tmp,
+				t_node **ptr_list);
 
 // Execution functions
-char				**list_to_array(t_node *head);
-void				execute(t_tree *root);
-int					is_single_node(t_tree *root);
-void				execute_fork(t_tree *root);
-void				execute_tree(t_tree *root);
-void				execute_and_or(t_tree *root);
-void				execute_pipe(t_tree *root);
-void				execute_command(t_tree *root);
+char **list_to_array(t_node *head);
+void execute(t_tree *root);
+int is_single_node(t_tree *root);
+void execute_fork(t_tree *root);
+void execute_tree(t_tree *root);
+void execute_and_or(t_tree *root);
+void execute_pipe(t_tree *root);
+void execute_command(t_tree *root);
 // int					check_status(t_tree *root, int status);
-void				fork_process(int dup_fd, int std_fd, int close_fd,
-						t_tree *root);
+void fork_process(int dup_fd, int std_fd, int close_fd,
+				  t_tree *root);
 
 // Environment functions
-char				**insert_env_var(char **env_table, char *key, char *value);
-char				**add_env_var(char **env_table, char *var_line);
-char				**modify_env_var(char **env_table, char *var_new_line,
-						char *var_old_line);
-char				**del_env_var(char **env_table, char *key);
-char				**update_env_table(char *var_line, int size);
-char				**get_env_table(void);
-void				free_env_table(char **env_table);
+char **insert_env_var(char **env_table, char *key, char *value);
+char **add_env_var(char **env_table, char *var_line);
+char **modify_env_var(char **env_table, char *var_new_line,
+					  char *var_old_line);
+char **del_env_var(char **env_table, char *key);
+char **update_env_table(char *var_line, int size);
+char **get_env_table(void);
+void free_env_table(char **env_table);
 
 // Heredoc functions
-int					create_heredoc_temp(void);
-void				check_delimiter(t_node *head, char *heredoc_input,
-						char *delimiter);
-void				check_heredoc(t_node *head);
+int create_heredoc_temp(void);
+void check_delimiter(t_node *head, char *heredoc_input,
+					 char *delimiter);
+void check_heredoc(t_node *head);
+
+// Builtins functions
+int builtin_cd(char **args);
+int check_n_flag(char *arg);
+void print_args(char **args, int n_flag);
+void echo_builtin(char **args);
+int builtin_pwd(char **args);
+int check_numeric_arg(char *arg);
+int check_numeric_limits(long num);
+int builtin_exit(char **args);
 
 // Utils functions
-int					error(int err);
-void				print_lst_node(t_node **head);
-void				printTree(t_tree *n);
-int					maxDepth(t_tree *n);
+int error(int err);
+void print_lst_node(t_node **head);
+void printTree(t_tree *n);
+int maxDepth(t_tree *n);
 
 #endif
